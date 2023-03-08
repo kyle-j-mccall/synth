@@ -3,15 +3,14 @@ import "./SynthLayout.css";
 
 export default function SynthLayout() {
   const [waveform, setWaveform] = useState("");
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const ctx = new AudioContext();
 
   const osc = ctx.createOscillator();
 
   osc.connect(ctx.destination);
-
+  osc.type = waveform;
   const startOsc = () => {
-    osc.type = "sine";
     osc.start();
     setTimeout(() => {
       osc.stop();
@@ -20,7 +19,11 @@ export default function SynthLayout() {
 
   return (
     <div className="synth-container">
-      <select>
+      <select
+        defaultValue={"DEFAULT"}
+        onChange={(e) => setWaveform(e.target.value)}
+      >
+        <option value="DEFAULT">Select a waveform</option>
         <option value="square">Square</option>
         <option value="triangle">Triangle</option>
         <option value="sawtooth">Saw</option>
