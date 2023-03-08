@@ -1,0 +1,25 @@
+.synth-container {
+  width: 50vw;
+  height: 30vh;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+}
+
+button {
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+button.playing {
+  background-color: white;
+}
