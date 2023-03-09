@@ -1,22 +1,3 @@
 .App {
   text-align: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: rgb(66, 63, 62);
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  justify-content: center;
-  align-items: center;
-}
-
-.synth-component-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.keyboard-component-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

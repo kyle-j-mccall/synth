@@ -5,12 +5,7 @@ import SynthLayout from "./Components/SynthLayout/SynthLayout";
 function App() {
   return (
     <div className="App">
-      <div className="synth-component-container">
-        <SynthLayout />
-      </div>
-      <div className="keyboard-component-container">
-        <Keyboard />
-      </div>
+      <SynthLayout />
     </div>
   );
 }
