@@ -4,7 +4,7 @@ import SynthLayout from "./Components/SynthLayout/SynthLayout";
 function App() {
   return (
     <div className="App">
-      <SynthLayout />
+      <SynthLayout className="synth-component" />
     </div>
   );
 }
