@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./SynthLayout.css";
 import { Piano, KeyboardShortcuts } from "react-piano";
 import "react-piano/dist/styles.css";
+import "./Keyboard.css";
 import { AwesomeButton } from "react-awesome-button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";

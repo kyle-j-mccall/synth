@@ -1,0 +1,59 @@
+.ReactPiano__Key--natural {
+  background: rgb(238, 242, 230);
+  border: 1px solid #888;
+  border-radius: 0 0 6px 6px;
+  cursor: pointer;
+  z-index: 0;
+  /*
+   * Uses flexbox with margin instead of absolute positioning to have more consistent margin rendering.
+   * This causes inline styles to be ignored.
+   */
+  flex: 1;
+  margin-right: 1px;
+}
+
+.ReactPiano__Keyboard {
+  /* Used for absolute positioning of .ReactPiano__Key--accidental elements */
+  position: relative;
+  /* Used to lay out .ReactPiano__Key--natural elements */
+  display: flex;
+  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.7);
+}
+
+.ReactPiano__Key--accidental {
+  background: rgb(47, 47, 47);
+  border: 1px solid #fff;
+  border-top: 1px solid transparent;
+  border-radius: 0 0 4px 4px;
+  cursor: pointer;
+  height: 66%;
+  /* Overlay on top of natural keys */
+  z-index: 1;
+  /* Use absolute positioning along with inline styles specified in JS to put keys in correct locations. */
+  position: absolute;
+  top: 0;
+}
+
+.ReactPiano__Key--active {
+  background: rgb(133, 205, 253);
+}
+
+.ReactPiano__Key--active.ReactPiano__Key--accidental {
+  border: 1px solid #fff;
+  border-top: 1px solid #3ac8da;
+  background: rgb(37, 109, 133);
+  /* Slight height reduction for "pushed-down" effect */
+  height: 65%;
+}
+
+.ReactPiano__NoteLabel--natural {
+  color: black;
+  margin-bottom: 3px;
+}
+
+.ReactPiano__NoteLabel--accidental {
+  color: white;
+  margin-bottom: 3px;
+}
