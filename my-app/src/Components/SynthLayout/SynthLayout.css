@@ -3,23 +3,41 @@
   height: 30vh;
   background-color: black;
   color: white;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  justify-content: center;
   border-radius: 10px;
 }
 
 button {
-  font-size: 1.5rem;
-  padding: 1rem 2rem;
+  font-size: 3vh;
+  padding: 1vh;
   border: none;
+  height: 6vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+  border-radius: 4px;
+  width: 7vw;
   background-color: #4caf50;
   color: white;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
 
-button:hover {
-  background-color: #3e8e41;
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-button.playing {
-  background-color: white;
+.select-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button:hover {
+  background-color: #3e8e41;
 }
