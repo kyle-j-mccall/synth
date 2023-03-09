@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import "./SynthLayout.css";
 import { Piano, KeyboardShortcuts } from "react-piano";
 import "react-piano/dist/styles.css";
+import { AwesomeButton } from "react-awesome-button";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import "react-awesome-button/dist/styles.css";
 const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout() {
-  const [waveform, setWaveform] = useState("");
+  const [waveform, setWaveform] = useState("Waveform");
   const ctx = new AudioContext();
   let osc;
 
@@ -50,21 +54,30 @@ export default function SynthLayout() {
     <div className="layout-body">
       <div className="synth-container">
         <div className="select-container">
-          <select
-            defaultValue={"DEFAULT"}
+          {/* <InputLabel id="demo-simple-select-label">Waveform</InputLabel> */}
+          <TextField
+            style={{ width: "12vw" }}
+            labelId="demo-simple-select-label"
+            id="demo-multiple-waveform"
+            value={waveform}
+            label="Waveform"
+            select
+            // input={<OutlinedInput label="Waveform" />}
             onChange={(e) => setWaveform(e.target.value)}
           >
-            <option value="DEFAULT">Select a waveform</option>
-            <option value="square">Square</option>
-            <option value="triangle">Triangle</option>
-            <option value="sawtooth">Saw</option>
-            <option value="sine">Sine</option>
-          </select>
+            <MenuItem value={"sine"}>Sine</MenuItem>
+            <MenuItem value={"triangle"}>Triangle</MenuItem>
+            <MenuItem value={"square"}>Square</MenuItem>
+            <MenuItem value={"sawtooth"}>Saw</MenuItem>
+          </TextField>
         </div>
         <div className="button-container">
-          <button onMouseDown={() => startOsc()} onMouseUp={() => stopOsc()}>
+          <AwesomeButton
+            onMouseDown={() => startOsc()}
+            onMouseUp={() => stopOsc()}
+          >
             Play
-          </button>
+          </AwesomeButton>
         </div>
       </div>
       <div className="keyboard-container">
