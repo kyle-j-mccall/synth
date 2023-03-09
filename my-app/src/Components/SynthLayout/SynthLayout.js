@@ -24,7 +24,7 @@ export default function SynthLayout() {
   const playNote = (midiNumber) => {
     const frequency = MidiNumbers.midiToFrequency(midiNumber);
     osc = ctx.createOscillator(); // use the same oscillator instance
-    osc.type = "sine"; // You can change the oscillator type here
+    osc.type = waveform; // You can change the oscillator type here
     osc.frequency.value = frequency;
     osc.connect(ctx.destination);
     osc.start();
