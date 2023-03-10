@@ -14,21 +14,24 @@ import downArrow from "../../assets/arrow-down.png";
 const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout() {
-  const [osc1Waveform, setOsc1Waveform] = useState("");
+  const [osc1Waveform, setOsc1Waveform] = useState("sine");
   const [osc2Waveform, setOsc2Waveform] = useState("sine");
   const [osc1Gain, setOsc1Gain] = useState(0);
   const [osc2Gain, setOsc2Gain] = useState(0);
-  const [osc1Semitone, setOsc1Semitone] = useState(0);
-  const [osc2Semitone, setOsc2Semitone] = useState(0);
+  const [semitoneNum1, setSemitoneNum1] = useState(0);
+  const [semitoneNum2, setSemitoneNum2] = useState(0);
   const [attack, setAttack] = useState(0);
   const [decay, setDecay] = useState(0);
   const [sustain, setSustain] = useState(0);
   const [release, setRelease] = useState(0);
-  const [osc1Pitch, setOsc1Pitch] = useState(440);
-  const [osc2Pitch, setOsc2Pitch] = useState(440);
+  const [osc1Pitch, setOsc1Pitch] = useState(MidiNumbers.fromNote["c3"]);
+  const [osc2Pitch, setOsc2Pitch] = useState(MidiNumbers.fromNote["c3"]);
   const [unisonWidth, setUnisonWidth] = useState(1);
+
   const ctx = new AudioContext();
+  const semitoneRatio = Math.pow(2, 1 / 12);
   let osc;
+
   MidiNumbers.midiToFrequency = function (midiNumber) {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
   };
@@ -40,22 +43,35 @@ export default function SynthLayout() {
     keyboardConfig: KeyboardShortcuts.HOME_ROW,
   });
 
+  const incrementOsc1 = () => {
+    setOsc1Pitch((prev) => prev * semitoneRatio);
+  };
+  const decrementOsc1 = () => {
+    setOsc1Pitch((prev) => prev / semitoneRatio);
+  };
+  const incrementOsc2 = () => {
+    setOsc2Pitch((prev) => prev * semitoneRatio);
+  };
+  const decrementOsc2 = () => {
+    setOsc2Pitch((prev) => prev / semitoneRatio);
+  };
+
   //setting up array of oscillators for detuning functionality
   const oscBank = new Array(2);
 
-  const osc1 = (freq) => {
+  const osc1 = (frequency) => {
     osc = ctx.createOscillator();
     osc.type = osc1Waveform;
-    osc.frequency.value = freq;
+    osc.frequency.value = frequency;
     osc.connect(ctx.destination);
     osc.start();
     return osc;
   };
 
-  const osc2 = (freq) => {
+  const osc2 = (frequency) => {
     osc = ctx.createOscillator();
     osc.type = osc2Waveform;
-    osc.frequency.value = freq;
+    osc.frequency.value = frequency;
     osc.connect(ctx.destination);
     osc.start();
     return osc;
@@ -64,7 +80,6 @@ export default function SynthLayout() {
   //function for keyboard input
   const playNote = (midiNumber) => {
     const freq = MidiNumbers.midiToFrequency(midiNumber);
-    //creating multiple instances of oscillators
     oscBank[0] = osc1(freq);
     oscBank[1] = osc2(freq);
   };
@@ -94,16 +109,18 @@ export default function SynthLayout() {
                   src={upArrow}
                   alt="pitch-up"
                   onClick={() => {
-                    setOsc1Semitone((prevState) => prevState + 1);
+                    setSemitoneNum1((prevState) => prevState + 1);
+                    incrementOsc1();
                   }}
                 />
-                <p className="semitones">{osc1Semitone}</p>
+                <p className="semitones">{semitoneNum1}</p>
                 <img
                   className="pitch-arrow"
                   src={downArrow}
                   alt="pitch-down"
                   onClick={() => {
-                    setOsc1Semitone((prevState) => prevState - 1);
+                    setSemitoneNum1((prevState) => prevState - 1);
+                    decrementOsc1();
                   }}
                 />
               </div>
@@ -113,16 +130,18 @@ export default function SynthLayout() {
                   src={upArrow}
                   alt="pitch-up"
                   onClick={() => {
-                    setOsc2Semitone((prevState) => prevState + 1);
+                    setSemitoneNum2((prevState) => prevState + 1);
+                    incrementOsc2();
                   }}
                 />
-                <p className="semitones">{osc2Semitone}</p>
+                <p className="semitones">{semitoneNum2}</p>
                 <img
                   className="pitch-arrow"
                   src={downArrow}
                   alt="pitch-down"
                   onClick={() => {
-                    setOsc2Semitone((prevState) => prevState - 1);
+                    setSemitoneNum2((prevState) => prevState - 1);
+                    decrementOsc2();
                   }}
                 />
               </div>
