@@ -7,7 +7,7 @@
   background-position: center;
   background-size: cover;
   display: grid;
-  grid-template-rows: 3.5fr 2fr;
+  grid-template-rows: 4.5fr 2fr;
   grid-template-columns: 1fr;
   justify-content: center;
   align-items: center;
@@ -16,8 +16,8 @@
 }
 
 .synth-container {
-  width: 70vw;
-  height: 60vh;
+  width: 75vw;
+  height: 65vh;
   background-color: rgb(203, 228, 222);
   border: 2px solid;
   color: black;
@@ -35,18 +35,29 @@
 
 .module-titles {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
   height: 100%;
   justify-content: center;
   align-items: center;
   font-size: 4vh;
+  color: white;
+  background-color: rgb(4, 41, 58);
   text-shadow: 1px 1px 1px black;
+  border: 2px solid black;
+  border-radius: 3px;
+  box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.wave-icon.selected {
+  height: 3.2vh;
 }
 
 .module-controls {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   height: 100%;
   justify-content: center;
@@ -82,6 +93,14 @@
 
 .pitch-arrow {
   height: 4vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  cursor: pointer;
+}
+
+.semitones {
+  margin-left: 1vw;
+  margin-right: 1vw;
 }
 
 .button-container {
@@ -101,7 +120,7 @@ button:hover {
 }
 
 .wave-icon {
-  height: 3vh;
+  height: 2.2vh;
   margin: 0.5vw;
   cursor: pointer;
 }
