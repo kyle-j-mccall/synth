@@ -1,22 +1,45 @@
 export class OscNode {
   constructor(audioContext) {
     this.audioContext = audioContext;
+    this.gainNode = audioContext.createGain();
+    this.playing = false;
     this.oscNode = audioContext.createOscillator();
     this.state = {
       pitch: 440, // default pitch is A4 (440 Hz)
-      waveform: "sine", // default waveform is sine
+      waveform: "sine",
+      gain: 0.5,
     };
+
+    // connect the oscillator node to the gain node
+    this.oscNode.connect(this.gainNode);
+
+    // connect the gain node to the destination
+    this.gainNode.connect(audioContext.destination);
+  }
+
+  isPlaying() {
+    return this.playing;
   }
 
   start(freq) {
-    this.oscNode.type = this.state.waveform;
-    this.oscNode.frequency.value = freq;
-    this.oscNode.connect(this.audioContext.destination);
-    this.oscNode.start();
+    if (!this.playing) {
+      // check if the Oscillator is already playing
+      this.oscNode = this.audioContext.createOscillator();
+      this.oscNode.type = this.state.waveform;
+      this.oscNode.frequency.value = freq;
+      this.gainNode.gain.value = this.state.gain; // set the gain value
+      this.oscNode.connect(this.audioContext.destination);
+      this.oscNode.start();
+      this.playing = true;
+    }
   }
 
   stop() {
-    this.oscNode.stop();
+    if (this.playing) {
+      // check if the Oscillator is currently playing
+      this.oscNode.stop();
+      this.playing = false;
+    }
   }
 
   incrementPitch() {
@@ -32,7 +55,8 @@ export class OscNode {
   }
 
   setWaveform(waveform) {
-    this.oscNode.type = waveform;
+    this.state.waveform = waveform;
+    this.oscNode.type = this.state.waveform;
   }
 
   setPitch(pitch) {
