@@ -1,10 +1,10 @@
 import "./App.css";
-import SynthLayout from "./Components/SynthLayout/SynthLayout";
+import SynthLayout1 from "./Components/SynthLayout/SynthLayout1";
 
 function App() {
   return (
     <div className="App">
-      <SynthLayout className="synth-component" />
+      <SynthLayout1 className="synth-component" />
     </div>
   );
 }
