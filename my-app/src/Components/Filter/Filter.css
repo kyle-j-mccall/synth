@@ -1,0 +1,25 @@
+.filter-container {
+  display: grid;
+  grid-template-rows: 3fr 2fr;
+  height: 100%;
+  align-items: center;
+  background-color: rgb(37, 109, 133);
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  font-size: 3vh;
+  text-shadow: 0.75px 0.75px 0.75px black;
+  box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.cutoff-container {
+}
+
+.cutoff-knob {
+  margin-top: 8vh;
+}
+
+.res-knob {
+  margin-bottom: 8vh;
+}

@@ -7,6 +7,8 @@ import ADSR from "../ADSR/ADSR";
 import Keyboard from "../Keyboard/Keyboard";
 import { OscNode } from "../../Classes/OscNode";
 import { KeyboardShortcuts } from "react-piano";
+import FilterControls from "../Filter/Filter";
+import FX from "../FX/FX";
 
 const MidiNumbers = require("react-piano").MidiNumbers;
 
@@ -63,17 +65,17 @@ export default function SynthLayout1() {
           <div>Oscillators</div>
           <div>Filter</div>
           <div>ADSR</div>
-          <div>FX</div>
+          <div className="fx-title">FX</div>
         </div>
         <div className="module-controls">
           <div className="oscillators">
             <Oscillator oscillator={oscillator1} waveform={waveform} />
             <Oscillator oscillator={oscillator2} waveform={waveform} />
           </div>
-          <div className="filter-container">filter</div>
-          <div className="adsr-container">
-            <ADSR />
-          </div>
+
+          <FilterControls />
+          <ADSR />
+          <FX />
         </div>
       </div>
       <Keyboard

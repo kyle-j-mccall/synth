@@ -8,6 +8,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 3vh;
+  text-shadow: 0.75px 0.75px 0.75px black;
 }
 
 .pitch-controls {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Knob } from "primereact/knob";
+import "./ADSR.css";
 
 export default function ADSR() {
   const [attack, setAttack] = useState(0);
@@ -18,13 +19,12 @@ export default function ADSR() {
           max={50}
           onChange={(e) => setAttack(e.value)}
           strokeWidth={6}
-          rangeColor="rgb(245, 110, 179)"
-          valueColor="rgb(203, 228, 222)"
+          rangeColor="rgb(37, 109, 133)"
+          valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
       </div>
       <div className="decay-container">
-        <p>Decay</p>
         <Knob
           value={decay}
           size={60}
@@ -32,10 +32,11 @@ export default function ADSR() {
           max={50}
           onChange={(e) => setDecay(e.value)}
           strokeWidth={6}
-          rangeColor="rgb(245, 110, 179)"
-          valueColor="rgb(203, 228, 222)"
+          rangeColor="rgb(37, 109, 133)"
+          valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
+        <p>Decay</p>
       </div>
       <div className="sustain-container">
         <p>Sustain</p>
@@ -46,13 +47,12 @@ export default function ADSR() {
           max={50}
           onChange={(e) => setSustain(e.value)}
           strokeWidth={6}
-          rangeColor="rgb(245, 110, 179)"
-          valueColor="rgb(203, 228, 222)"
+          rangeColor="rgb(37, 109, 133)"
+          valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
       </div>
       <div className="release-container">
-        <p>Release</p>
         <Knob
           value={release}
           size={60}
@@ -60,10 +60,11 @@ export default function ADSR() {
           max={50}
           onChange={(e) => setRelease(e.value)}
           strokeWidth={6}
-          rangeColor="rgb(245, 110, 179)"
-          valueColor="rgb(203, 228, 222)"
+          rangeColor="rgb(37, 109, 133)"
+          valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
+        <p>Release</p>
       </div>
     </div>
   );
