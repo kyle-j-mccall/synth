@@ -10,7 +10,7 @@ export class OscNode {
 
   start(freq) {
     this.oscNode.type = this.state.waveform;
-    this.oscNode.frequency.value = this.state.pitch;
+    this.oscNode.frequency.value = freq;
     this.oscNode.connect(this.audioContext.destination);
     this.oscNode.start();
   }
