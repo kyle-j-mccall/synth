@@ -1,0 +1,45 @@
+.osc-component {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pitch-controls {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.osc-container {
+  display: flex;
+
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5vw;
+}
+
+.pitch-arrow {
+  height: 4vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  cursor: pointer;
+}
+
+.semitones {
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+
+.wave-icon {
+  height: 2.2vh;
+  margin: 0.5vw;
+  cursor: pointer;
+}

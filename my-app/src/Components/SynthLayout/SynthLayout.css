@@ -51,10 +51,6 @@
   -moz-box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.wave-icon.selected {
-  height: 3.2vh;
-}
-
 .module-controls {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -64,14 +60,11 @@
   align-items: center;
 }
 
-.osc-controls {
-  width: 100%;
-  height: 100%;
+.oscillators {
   display: grid;
-  grid-template-columns: 1fr 3fr;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  height: 100%;
 }
 
 .osc-pitch-controls {
