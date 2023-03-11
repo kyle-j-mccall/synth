@@ -12,13 +12,9 @@ const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout1() {
   const audioContext = new AudioContext();
-  // const [oscillators, setOscillators] = useState([]);
   const [oscillator1, setOscillator1] = useState(new OscNode(audioContext));
   const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
   const [waveform, setWaveform] = useState("sine"); // default waveform is "sine"
-
-  // const [oscillator1, setOscillator1] = useState(null);
-  // const [oscillator2, setOscillator2] = useState(null);
 
   console.log(oscillator1, oscillator2);
 
@@ -33,17 +29,6 @@ export default function SynthLayout1() {
     lastNote: lastNote,
     keyboardConfig: KeyboardShortcuts.HOME_ROW,
   });
-
-  // useEffect(() => {
-  //   const newOscillator1 = new OscNode(audioContext);
-  //   const newOscillator2 = new OscNode(audioContext);
-  //   setOscillator1(newOscillator1);
-  //   setOscillator2(newOscillator2);
-  //   return () => {
-  //     newOscillator1.stop();
-  //     newOscillator2.stop();
-  //   };
-  // }, [audioContext]);
 
   //function for keyboard input
   const playNote = (midiNumber) => {

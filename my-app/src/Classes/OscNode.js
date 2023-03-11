@@ -42,6 +42,11 @@ export class OscNode {
     }
   }
 
+  setGain(gain) {
+    this.state.gain = gain;
+    this.gainNode.gain.value = this.state.gain;
+  }
+
   incrementPitch() {
     const semitoneRatio = Math.pow(2, 1 / 12); // ratio of one semitone
     this.state.pitch *= semitoneRatio;
