@@ -17,6 +17,10 @@ export class OscNode {
     this.gainNode.connect(audioContext.destination);
   }
 
+  getGainNode() {
+    return this.gainNode;
+  }
+
   isPlaying() {
     return this.playing;
   }

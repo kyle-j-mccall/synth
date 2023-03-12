@@ -3,7 +3,6 @@
   grid-template-rows: 1fr 1fr 1fr 1fr;
   height: 100%;
   align-items: center;
-  background-color: rgb(37, 109, 133);
   border-right: 2px solid black;
   font-size: 3.2vh;
   font-family: "VT323", monospace;
@@ -32,7 +31,7 @@
 
   align-items: center;
   flex-direction: column;
-  background-color: rgb(178, 178, 178);
+  background-color: rgb(250, 88, 182);
 }
 .phaser-container {
   color: rgb(203, 228, 222);
@@ -50,6 +49,4 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: rgb(78, 159, 61);
-  border-bottom: 1px solid black;
 }

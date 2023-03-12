@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Knob } from "primereact/knob";
 import "./ADSR.css";
 
-export default function ADSR() {
+export default function ADSRControls() {
   const [attack, setAttack] = useState(0);
   const [decay, setDecay] = useState(0);
   const [sustain, setSustain] = useState(0);

@@ -5,6 +5,7 @@
   align-items: center;
   border-right: 2px solid black;
   font-size: 3vh;
+  background-color: rgb(137, 203, 188);
   box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);

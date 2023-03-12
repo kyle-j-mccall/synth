@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import upArrow from "../../assets/arrow-up.png";
 import downArrow from "../../assets/arrow-down.png";
 import { Knob } from "primereact/knob";
@@ -6,21 +6,29 @@ import sineIcon from "../../assets/sine.png";
 import sawIcon from "../../assets/saw.png";
 import squareIcon from "../../assets/square.png";
 import "./Osc.css";
+import { OscillatorContext } from "../../context/oscillatorContext";
 
-const Oscillator = ({ oscillator }) => {
+const Oscillator = (
+  {
+    // handleSetWaveform,
+    // handleDecrement,
+    // handleIncrement,
+  }
+) => {
+  const { oscillator1, waveform1 } = useContext(OscillatorContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
 
-  const handleIncrement = () => {
-    oscillator.incrementPitch();
+  const handleIncrement1 = () => {
+    console.log(oscillator1);
+    oscillator1.incrementPitch();
   };
 
-  const handleDecrement = () => {
-    oscillator.decrementPitch();
+  const handleDecrement1 = () => {
+    oscillator1.decrementPitch();
   };
 
   const handleSetWaveform = (wave) => {
-    const waveform = wave;
-    oscillator.setWaveform(waveform);
+    oscillator1.setWaveForm(wave);
   };
 
   return (
@@ -32,7 +40,7 @@ const Oscillator = ({ oscillator }) => {
             src={upArrow}
             alt="pitch-up"
             onClick={() => {
-              handleIncrement();
+              handleIncrement1();
               setSemitoneNum((prevState) => prevState + 1);
             }}
           />
@@ -42,7 +50,7 @@ const Oscillator = ({ oscillator }) => {
             src={downArrow}
             alt="pitch-down"
             onClick={() => {
-              handleDecrement();
+              handleDecrement1();
               setSemitoneNum((prevState) => prevState - 1);
             }}
           />

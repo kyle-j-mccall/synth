@@ -17,6 +17,7 @@
   height: 100%;
   justify-content: center;
   align-items: center;
+  margin-left: 1vh;
 }
 
 .osc-container {
@@ -25,7 +26,7 @@
   height: 100%;
   justify-content: center;
   align-items: center;
-  margin-right: 5vw;
+  margin-right: 4vw;
 }
 
 .pitch-arrow {
@@ -41,7 +42,7 @@
 }
 
 .wave-icon {
-  height: 2.2vh;
+  height: 3vh;
   margin: 0.5vw;
   cursor: pointer;
 }

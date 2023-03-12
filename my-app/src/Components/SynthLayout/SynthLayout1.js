@@ -1,22 +1,27 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import "./SynthLayout.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
 import Oscillator from "../Osc/Oscillator";
-import ADSR from "../ADSR/ADSR";
 import Keyboard from "../Keyboard/Keyboard";
 import { OscNode } from "../../Classes/OscNode";
 import { KeyboardShortcuts } from "react-piano";
 import FilterControls from "../Filter/Filter";
 import FX from "../FX/FX";
+import { ADSRNode } from "../../Classes/ADSRNode";
+import ADSRControls from "../ADSR/ADSRControls";
+import { OscillatorContext } from "../../context/oscillatorContext";
 
 const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout1() {
-  const audioContext = new AudioContext();
-  const [oscillator1, setOscillator1] = useState(new OscNode(audioContext));
-  const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
-  const [waveform, setWaveform] = useState("sine"); // default waveform is "sine"
+  const { oscillator1, setOscillator1, oscillator2, setOscillator2 } =
+    useContext(OscillatorContext);
+
+  // const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
+  // const [ADSR, setADSR] = useState(new ADSRNode(audioContext));
+  const [waveform1, setWaveform1] = useState("sine");
+  const [waveform2, setWaveform2] = useState("sine");
 
   console.log(oscillator1, oscillator2);
 
@@ -24,8 +29,16 @@ export default function SynthLayout1() {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
   };
 
-  const firstNote = MidiNumbers.fromNote("c3");
-  const lastNote = MidiNumbers.fromNote("c4");
+  MidiNumbers.frequencyToMidi = function (frequency) {
+    return 69 + 12 * Math.log2(frequency / 440);
+  };
+
+  const firstNote = oscillator1.state.pitch
+    ? MidiNumbers.frequencyToMidi(oscillator1.state.pitch)
+    : MidiNumbers.frequencyToMidi(440);
+  const lastNote = oscillator1.state.pitch
+    ? MidiNumbers.frequencyToMidi(oscillator1.state.pitch * 2)
+    : MidiNumbers.frequencyToMidi(880);
   const keyboardShortcuts = KeyboardShortcuts.create({
     firstNote: firstNote,
     lastNote: lastNote,
@@ -34,14 +47,10 @@ export default function SynthLayout1() {
 
   //function for keyboard input
   const playNote = (midiNumber) => {
-    const freq = MidiNumbers.midiToFrequency(midiNumber);
-    // const [oscillator1, oscillator2] = oscillators;
+    const freq = MidiNumbers.frequencyToMidi(oscillator1.state.pitch);
 
-    oscillator1.setPitch(freq);
-    oscillator2.setPitch(freq);
-
-    oscillator1.setWaveform(waveform);
-    oscillator2.setWaveform(waveform);
+    oscillator1.setWaveform(waveform1);
+    oscillator2.setWaveform(waveform2);
 
     if (!oscillator1.isPlaying()) {
       oscillator1.start(freq);
@@ -58,6 +67,15 @@ export default function SynthLayout1() {
     oscillator2.stop();
   };
 
+  const handleSetWaveform1 = (wave) => {
+    const waveform = wave;
+    oscillator1.setWaveform(waveform);
+  };
+  const handleSetWaveform2 = (wave) => {
+    const waveform = wave;
+    oscillator2.setWaveform(waveform);
+  };
+
   return (
     <div className="layout-body">
       <div className="synth-container">
@@ -69,12 +87,18 @@ export default function SynthLayout1() {
         </div>
         <div className="module-controls">
           <div className="oscillators">
-            <Oscillator oscillator={oscillator1} waveform={waveform} />
-            <Oscillator oscillator={oscillator2} waveform={waveform} />
+            <Oscillator
+              oscillator={oscillator1}
+              handleSetWaveform={handleSetWaveform1}
+            />
+            <Oscillator
+              oscillator={oscillator2}
+              handleSetWaveform={handleSetWaveform2}
+            />
           </div>
 
           <FilterControls />
-          <ADSR />
+          <ADSRControls />
           <FX />
         </div>
       </div>
