@@ -25,11 +25,6 @@ export class OscNode {
     return this.playing;
   }
 
-  setWaveform(waveform) {
-    this.state.waveform = waveform;
-    this.oscNode.type = this.state.waveform;
-  }
-
   start(freq) {
     if (!this.playing) {
       // check if the Oscillator is already playing
@@ -66,6 +61,11 @@ export class OscNode {
     const semitoneRatio = Math.pow(2, 1 / 12); // ratio of one semitone
     this.state.pitch /= semitoneRatio;
     this.oscNode.frequency.value = this.state.pitch;
+  }
+
+  setWaveform(waveform) {
+    this.state.waveform = waveform;
+    this.oscNode.type = this.state.waveform;
   }
 
   setPitch(pitch) {
