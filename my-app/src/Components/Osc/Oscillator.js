@@ -8,14 +8,8 @@ import squareIcon from "../../assets/square.png";
 import "./Osc.css";
 import { OscillatorContext } from "../../context/oscillatorContext";
 
-const Oscillator = (
-  {
-    // handleSetWaveform,
-    // handleDecrement,
-    // handleIncrement,
-  }
-) => {
-  const { oscillator1, waveform1 } = useContext(OscillatorContext);
+const Oscillator = ({}) => {
+  const { oscillator1 } = useContext(OscillatorContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
 
   const handleIncrement1 = () => {
@@ -28,7 +22,7 @@ const Oscillator = (
   };
 
   const handleSetWaveform = (wave) => {
-    oscillator1.setWaveForm(wave);
+    oscillator1.setWaveform(wave);
   };
 
   return (
