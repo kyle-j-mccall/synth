@@ -15,7 +15,7 @@ const Oscillator = (
     // handleIncrement,
   }
 ) => {
-  const { oscillator1, waveform1 } = useContext(OscillatorContext);
+  const { oscillator1 } = useContext(OscillatorContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
 
   const handleIncrement1 = () => {
@@ -28,7 +28,8 @@ const Oscillator = (
   };
 
   const handleSetWaveform = (wave) => {
-    oscillator1.setWaveForm(wave);
+    console.log(wave);
+    oscillator1.setWaveform(wave);
   };
 
   return (

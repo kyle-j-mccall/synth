@@ -65,11 +65,9 @@ export class OscNode {
 
   setWaveform(waveform) {
     this.state.waveform = waveform;
-    this.oscNode.type = this.state.waveform;
   }
 
   setPitch(pitch) {
     this.state.pitch = pitch;
-    this.oscNode.frequency.value = this.state.pitch;
   }
 }

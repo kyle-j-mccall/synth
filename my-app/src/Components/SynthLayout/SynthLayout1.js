@@ -18,11 +18,6 @@ export default function SynthLayout1() {
   const { oscillator1, setOscillator1, oscillator2, setOscillator2 } =
     useContext(OscillatorContext);
 
-  // const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
-  // const [ADSR, setADSR] = useState(new ADSRNode(audioContext));
-  const [waveform1, setWaveform1] = useState("sine");
-  const [waveform2, setWaveform2] = useState("sine");
-
   console.log(oscillator1, oscillator2);
 
   MidiNumbers.midiToFrequency = function (midiNumber) {
@@ -48,9 +43,6 @@ export default function SynthLayout1() {
   //function for keyboard input
   const playNote = (midiNumber) => {
     const freq = MidiNumbers.frequencyToMidi(oscillator1.state.pitch);
-
-    oscillator1.setWaveform(waveform1);
-    oscillator2.setWaveform(waveform2);
 
     if (!oscillator1.isPlaying()) {
       oscillator1.start(freq);
