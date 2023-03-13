@@ -10,10 +10,9 @@ export const OscillatorProvider = ({ children }) => {
   const audioContext = new AudioContext();
   const [oscillator1, setOscillator1] = useState(new OscNode(audioContext));
   const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
-  const [waveform1, setWaveform1] = useState("sine");
-  const [waveform2, setWaveform2] = useState("sine");
 
-  console.log(oscillator1, oscillator2);
+  console.log("osc11111", oscillator1);
+  console.log("osc22222", oscillator2);
 
   return (
     <OscillatorContext.Provider
@@ -22,10 +21,6 @@ export const OscillatorProvider = ({ children }) => {
         setOscillator1,
         oscillator2,
         setOscillator2,
-        waveform1,
-        setWaveform1,
-        waveform2,
-        setWaveform2,
       }}
     >
       {children}

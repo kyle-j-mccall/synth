@@ -10,27 +10,29 @@ import { OscillatorContext } from "../../context/oscillatorContext";
 // import "primereact/resources/themes/fluent-light/theme.css";
 
 const Oscillator = ({}) => {
-  const { oscillator1 } = useContext(OscillatorContext);
+  const { oscillator2 } = useContext(OscillatorContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
   const [volume, setVolume] = useState(0);
 
+  console.log(volume);
+
   const handleIncrement = () => {
-    console.log(oscillator1);
-    oscillator1.incrementPitch();
+    console.log(oscillator2);
+    oscillator2.incrementPitch();
   };
 
   const handleDecrement = () => {
-    oscillator1.decrementPitch();
+    oscillator2.decrementPitch();
   };
 
   const handleSetWaveform = (wave) => {
     console.log(wave);
-    oscillator1.setWaveform(wave);
+    oscillator2.setWaveform(wave);
   };
 
   const handleSetGain = (value) => {
     setVolume(value);
-    oscillator1.adjustGain(value);
+    oscillator2.adjustGain(value);
   };
 
   return (

@@ -12,6 +12,10 @@
   text-shadow: 0.75px 0.75px 0.75px black;
 }
 
+.my-knob path.knob-circle {
+  fill: white !important;
+}
+
 .pitch-controls {
   display: flex;
   height: 100%;

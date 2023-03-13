@@ -4,21 +4,16 @@ import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
 import Oscillator from "../Osc/Oscillator";
 import Keyboard from "../Keyboard/Keyboard";
-import { OscNode } from "../../Classes/OscNode";
 import { KeyboardShortcuts } from "react-piano";
 import FilterControls from "../Filter/Filter";
 import FX from "../FX/FX";
-import { ADSRNode } from "../../Classes/ADSRNode";
 import ADSRControls from "../ADSR/ADSRControls";
 import { OscillatorContext } from "../../context/oscillatorContext";
 
 const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout1() {
-  const { oscillator1, setOscillator1, oscillator2, setOscillator2 } =
-    useContext(OscillatorContext);
-
-  console.log(oscillator1, oscillator2);
+  const { oscillator1, oscillator2 } = useContext(OscillatorContext);
 
   MidiNumbers.midiToFrequency = function (midiNumber) {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
@@ -28,11 +23,11 @@ export default function SynthLayout1() {
     return 69 + 12 * Math.log2(frequency / 440);
   };
 
-  const firstNote = oscillator1.state.pitch
-    ? MidiNumbers.frequencyToMidi(oscillator1.state.pitch)
+  const firstNote = oscillator1.pitch
+    ? MidiNumbers.frequencyToMidi(oscillator1.pitch)
     : MidiNumbers.frequencyToMidi(440);
-  const lastNote = oscillator1.state.pitch
-    ? MidiNumbers.frequencyToMidi(oscillator1.state.pitch * 2)
+  const lastNote = oscillator1.pitch
+    ? MidiNumbers.frequencyToMidi(oscillator1.pitch * 2)
     : MidiNumbers.frequencyToMidi(880);
   const keyboardShortcuts = KeyboardShortcuts.create({
     firstNote: firstNote,
@@ -42,21 +37,29 @@ export default function SynthLayout1() {
 
   //function for keyboard input
   const playNote = (midiNumber) => {
-    const freq = MidiNumbers.frequencyToMidi(oscillator1.state.pitch);
+    const freq = MidiNumbers.frequencyToMidi(oscillator1.pitch);
 
-    if (!oscillator1.isPlaying()) {
-      oscillator1.start(freq);
+    if (!oscillator1.isPlaying) {
+      console.log("gain111", oscillator1.gainNode);
+      oscillator1.startOsc(freq);
     }
 
-    if (!oscillator2.isPlaying()) {
-      oscillator2.start(freq);
+    if (!oscillator2.isPlaying) {
+      console.log("gain222", oscillator2.gainNode);
+
+      oscillator2.startOsc(freq);
     }
   };
 
   //stop keyboard input
   const stopNote = () => {
-    oscillator1.stop();
-    oscillator2.stop();
+    console.log(oscillator1.isPlaying);
+    if (oscillator1.isPlaying) {
+      oscillator1.stopOsc();
+    }
+    if (oscillator2.isPlaying) {
+      oscillator2.stopOsc();
+    }
   };
 
   const handleSetWaveform1 = (wave) => {
@@ -84,7 +87,7 @@ export default function SynthLayout1() {
               handleSetWaveform={handleSetWaveform1}
             />
             <Oscillator
-              oscillator={oscillator2}
+              oscillator2={oscillator2}
               handleSetWaveform={handleSetWaveform2}
             />
           </div>

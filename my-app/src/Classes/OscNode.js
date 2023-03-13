@@ -1,54 +1,65 @@
+import { Filter } from "./FilterNode";
+
 export class OscNode {
+  oscNode;
+  gainNode;
+  pitch;
+  waveform;
+  isPlaying;
+  filter;
+
   constructor(audioContext) {
     this.audioContext = audioContext;
     this.gainNode = audioContext.createGain();
-    this.playing = false;
-    this.oscNode = audioContext.createOscillator();
-    this.state = {
-      pitch: 440, // default pitch is A4 (440 Hz)
-      waveform: "sine",
-      gain: 0.5,
-    };
-
-    // connect the oscillator node to the gain node
-    this.oscNode.connect(this.gainNode);
-
-    // connect the gain node to the destination
-    this.gainNode.connect(audioContext.destination);
+    this.gainNode.gain.value = 0.5; // default gain is 0.5
+    this.oscNode = null;
+    this.isPlaying = false;
+    this.pitch = 440; // default pitch is A4 (440 Hz)
+    this.waveform = "sine"; // default waveform is sine
+    this.filter = new Filter(audioContext, "lowpass", 400, 1, 0);
   }
 
   getGainNode() {
     return this.gainNode;
   }
 
-  isPlaying() {
-    return this.playing;
+  setGain(volume) {
+    // const gain = volume / 100;
+    this.gainNode.gain.value = volume;
   }
 
-  start(freq) {
-    if (!this.playing) {
-      // check if the Oscillator is already playing
+  adjustGain(change) {
+    const currentGain = this.gainNode.gain.value;
+    const converted = change / 10;
+    const newGain =
+      converted > currentGain
+        ? currentGain + change / 10
+        : currentGain - Math.abs(change) / 10;
+    this.setGain(newGain);
+  }
+
+  startOsc(freq) {
+    if (!this.isPlaying) {
       this.oscNode = this.audioContext.createOscillator();
-      this.oscNode.type = this.state.waveform;
+      this.oscNode.type = this.waveform;
       this.oscNode.frequency.value = freq;
-      this.gainNode.gain.value = this.state.gain; // set the gain value
-      this.oscNode.connect(this.audioContext.destination);
+
+      this.oscNode.connect(this.filter.filter); // connect oscillator to filter
+      this.filter.connect(this.gainNode); // connect filter to gain node
+      this.gainNode.connect(this.audioContext.destination); // connect gain node to destination
+
       this.oscNode.start();
-      this.playing = true;
+      this.isPlaying = true;
     }
   }
 
-  stop() {
-    if (this.playing) {
-      // check if the Oscillator is currently playing
+  stopOsc() {
+    if (this.isPlaying) {
       this.oscNode.stop();
-      this.playing = false;
+      this.oscNode.disconnect();
+      this.filter.disconnect();
+      this.isPlaying = false;
     }
-  }
-
-  setGain(gain) {
-    this.state.gain = gain;
-    this.gainNode.gain.value = this.state.gain;
   }
 
   incrementPitch() {
@@ -64,7 +75,10 @@ export class OscNode {
   }
 
   setWaveform(waveform) {
-    this.state.waveform = waveform;
+    this.waveform = waveform;
+    if (this.isPlaying) {
+      this.oscNode.type = waveform;
+    }
   }
 
   setPitch(pitch) {
