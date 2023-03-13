@@ -6,6 +6,7 @@
   background-color: ivory;
   border-right: 2px solid black;
   border-left: 2px solid black;
+  border-bottom: 1.5px solid black;
   font-size: 3vh;
   text-shadow: 0.75px 0.75px 0.75px black;
   box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -14,7 +15,7 @@
 }
 
 .cutoff-knob {
-  margin-top: 4vh;
+  margin-top: 2vh;
 }
 
 .res-knob {

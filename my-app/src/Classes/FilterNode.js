@@ -12,7 +12,7 @@ export class Filter {
     this.filter.type = type;
   }
 
-  setFrequency(frequency) {
+  setCutoff(frequency) {
     this.filter.frequency.setValueAtTime(frequency, this.context.currentTime);
   }
 

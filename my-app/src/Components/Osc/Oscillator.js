@@ -5,7 +5,7 @@ import { Knob } from "primereact/knob";
 import sineIcon from "../../assets/sine.png";
 import sawIcon from "../../assets/saw.png";
 import squareIcon from "../../assets/square.png";
-import "./Osc.css";
+import "./Osc1.css";
 import { OscillatorContext } from "../../context/oscillatorContext";
 // import "primereact/resources/themes/fluent-light/theme.css";
 
@@ -36,7 +36,7 @@ const Oscillator = ({}) => {
   };
 
   return (
-    <div className="osc-component">
+    <div className="osc-component1">
       <div className="pitch-controls">
         <div className="osc-pitch">
           <img

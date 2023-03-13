@@ -8,6 +8,19 @@ export default function ADSRControls() {
   const [sustain, setSustain] = useState(0);
   const [release, setRelease] = useState(0);
 
+  const handleSetAttack = (e) => {
+    setAttack(e.value);
+  };
+  const handleSetDecay = (e) => {
+    setDecay(e.value);
+  };
+  const handleSetSustain = (e) => {
+    setSustain(e.value);
+  };
+  const handleSetRelease = (e) => {
+    setRelease(e.value);
+  };
+
   return (
     <div className="adsr-container">
       <div className="attack-container">
@@ -17,7 +30,7 @@ export default function ADSRControls() {
           size={60}
           min={0}
           max={50}
-          onChange={(e) => setAttack(e.value)}
+          onChange={(e) => handleSetAttack(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"
           valueColor="rgb(229, 209, 250)"
@@ -30,7 +43,7 @@ export default function ADSRControls() {
           size={60}
           min={0}
           max={50}
-          onChange={(e) => setDecay(e.value)}
+          onChange={(e) => handleSetDecay(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"
           valueColor="rgb(229, 209, 250)"
@@ -45,7 +58,7 @@ export default function ADSRControls() {
           size={60}
           min={0}
           max={50}
-          onChange={(e) => setSustain(e.value)}
+          onChange={(e) => handleSetSustain(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"
           valueColor="rgb(229, 209, 250)"
@@ -58,7 +71,7 @@ export default function ADSRControls() {
           size={60}
           min={0}
           max={50}
-          onChange={(e) => setRelease(e.value)}
+          onChange={(e) => handleSetRelease(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"
           valueColor="rgb(229, 209, 250)"

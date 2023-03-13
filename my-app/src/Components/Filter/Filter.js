@@ -4,9 +4,12 @@ import "./Filter.css";
 import { OscillatorContext } from "../../context/oscillatorContext";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import { InputLabel } from "@mui/material";
 
 export default function FilterControls() {
   const [filterType, setFilterType] = useState("lowpass");
+  const [cutoff, setCutoff] = useState(3000);
+  const [filterQ, setFilterQ] = useState(20);
   const { oscillator1, oscillator2 } = useContext(OscillatorContext);
 
   const handleSetType = (e) => {
@@ -15,14 +18,27 @@ export default function FilterControls() {
     oscillator2.filter.setType(filterType);
   };
 
+  const handleSetCutoff = (e) => {
+    setCutoff(e.value);
+    oscillator1.filter.setCutoff(e.value);
+    oscillator2.filter.setCutoff(e.value);
+  };
+
+  const handleSetFilterRes = (e) => {
+    setFilterQ(e.value);
+    oscillator1.filter.setCutoff(e.value);
+    oscillator2.filter.setCutoff(e.value);
+  };
+
   return (
     <div className="filter-container">
       <div className="cutoff-container">
+        <InputLabel>Filter Type</InputLabel>
         <TextField
           select
           variant="standard"
           id="standard-basic"
-          label="Filter Type"
+          // label="Filter Type"
           onChange={(e) => handleSetType(e.target.value)}
         >
           <MenuItem value={"lowpass"}>Lowpass</MenuItem>
@@ -32,14 +48,15 @@ export default function FilterControls() {
         </TextField>
         <div className="cutoff-knob">
           <Knob
-            value={5}
+            value={cutoff}
             size={100}
-            min={0}
-            max={50}
+            min={20}
+            max={20000}
             strokeWidth={6}
             rangeColor="rgb(245, 110, 179)"
             valueColor="rgb(203, 228, 222)"
             textColor="white"
+            onChange={(e) => handleSetCutoff(e)}
           />
           <p>Cutoff</p>
         </div>
@@ -47,16 +64,17 @@ export default function FilterControls() {
       <div className="res-container">
         <div className="res-knob">
           <Knob
-            value={5}
+            value={filterQ}
             size={50}
             min={0}
-            max={50}
+            max={100}
             strokeWidth={6}
             rangeColor="rgb(245, 110, 179)"
             valueColor="rgb(203, 228, 222)"
             textColor="white"
+            onChange={(e) => handleSetFilterRes(e)}
           />
-          <p>Resonance</p>
+          <p>Q</p>
         </div>
       </div>
     </div>
