@@ -39,10 +39,12 @@ export class OscNode {
     this.setGain(newGain);
   }
 
-  startOsc(freq) {
+  startOsc(freq, attack) {
     if (!this.isPlaying) {
       this.oscNode = this.audioContext.createOscillator();
       const adsr = new ADSRNode(this.audioContext, this.gainNode);
+      adsr.setAttackTime(attack); // set the attack time
+
       this.oscNode.type = this.waveform;
       this.oscNode.frequency.value = freq;
       this.oscNode.connect(this.filter.filter); // connect oscillator to filter

@@ -9,8 +9,8 @@ export class ADSRNode {
   constructor(audioContext, gainNode) {
     this.audioContext = audioContext;
     this.gainNode = gainNode;
-    this.attackTime = 1;
-    this.decayTime = 0.1;
+    this.attackTime = 0.3;
+    this.decayTime = 0.5;
     this.sustainLevel = 0.5;
     this.releaseTime = 0.5;
   }

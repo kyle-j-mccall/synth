@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./SynthLayout.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
@@ -14,7 +14,11 @@ import Oscillator2 from "../Osc/Oscillator2";
 const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout1() {
-  const { oscillator1, oscillator2 } = useContext(OscillatorContext);
+  const { oscillator1, oscillator2, globalAttack } =
+    useContext(OscillatorContext);
+
+  let attackInSecs = globalAttack / 1000;
+  console.log(attackInSecs);
 
   MidiNumbers.midiToFrequency = function (midiNumber) {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
@@ -40,13 +44,12 @@ export default function SynthLayout1() {
   const playNote = (midiNumber) => {
     const freq = MidiNumbers.frequencyToMidi(oscillator1.pitch);
     const freq2 = MidiNumbers.frequencyToMidi(oscillator2.pitch);
-
     if (!oscillator1.isPlaying) {
-      oscillator1.startOsc(freq, 1);
+      oscillator1.startOsc(freq, attackInSecs);
     }
 
     if (!oscillator2.isPlaying) {
-      oscillator2.startOsc(freq2, 1);
+      oscillator2.startOsc(freq2, attackInSecs);
     }
   };
 

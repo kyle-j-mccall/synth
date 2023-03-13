@@ -8,7 +8,7 @@ import { InputLabel } from "@mui/material";
 
 export default function FilterControls() {
   const [filterType, setFilterType] = useState("lowpass");
-  const [cutoff, setCutoff] = useState(3000);
+  const [cutoff, setCutoff] = useState(5000);
   const [filterQ, setFilterQ] = useState(20);
   const { oscillator1, oscillator2 } = useContext(OscillatorContext);
 
@@ -38,7 +38,7 @@ export default function FilterControls() {
           select
           variant="standard"
           id="standard-basic"
-          // label="Filter Type"
+          value={filterType}
           onChange={(e) => handleSetType(e.target.value)}
         >
           <MenuItem value={"lowpass"}>Lowpass</MenuItem>

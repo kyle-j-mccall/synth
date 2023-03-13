@@ -10,6 +10,7 @@ export const OscillatorProvider = ({ children }) => {
   const audioContext = new AudioContext();
   const [oscillator1, setOscillator1] = useState(new OscNode(audioContext));
   const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
+  const [globalAttack, setGlobalAttack] = useState(100);
 
   return (
     <OscillatorContext.Provider
@@ -18,6 +19,8 @@ export const OscillatorProvider = ({ children }) => {
         setOscillator1,
         oscillator2,
         setOscillator2,
+        globalAttack,
+        setGlobalAttack,
       }}
     >
       {children}

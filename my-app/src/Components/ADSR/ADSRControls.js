@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Knob } from "primereact/knob";
 import "./ADSR.css";
+import { OscillatorContext } from "../../context/oscillatorContext";
+import { ADSRNode } from "../../Classes/ADSRNode";
 
 export default function ADSRControls() {
-  const [attack, setAttack] = useState(0);
+  const { globalAttack, setGlobalAttack } = useContext(OscillatorContext);
+  // console.log(globalAttack);
+  // const [attack, setAttack] = useState(0);
   const [decay, setDecay] = useState(0);
   const [sustain, setSustain] = useState(0);
   const [release, setRelease] = useState(0);
 
   const handleSetAttack = (e) => {
-    setAttack(e.value);
+    setGlobalAttack(e.value);
   };
   const handleSetDecay = (e) => {
     setDecay(e.value);
@@ -26,10 +30,11 @@ export default function ADSRControls() {
       <div className="attack-container">
         <p>Attack</p>
         <Knob
-          value={attack}
+          value={globalAttack}
           size={60}
-          min={0}
-          max={50}
+          min={50}
+          max={5000}
+          step={10}
           onChange={(e) => handleSetAttack(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"

@@ -7,17 +7,15 @@ import sawIcon from "../../assets/saw.png";
 import squareIcon from "../../assets/square.png";
 import "./Osc2.css";
 import { OscillatorContext } from "../../context/oscillatorContext";
-// import "primereact/resources/themes/fluent-light/theme.css";
 
 const Oscillator2 = ({}) => {
   const { oscillator2 } = useContext(OscillatorContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
   const [volume, setVolume] = useState(0);
 
-  console.log("osc2", oscillator2);
+  // console.log("osc2", oscillator2);
 
   const handleIncrement = () => {
-    console.log("click");
     oscillator2.incrementPitch();
   };
 
