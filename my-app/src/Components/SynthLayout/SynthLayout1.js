@@ -39,6 +39,7 @@ export default function SynthLayout1() {
   //function for keyboard input
   const playNote = (midiNumber) => {
     const freq = MidiNumbers.frequencyToMidi(oscillator1.pitch);
+    const freq2 = MidiNumbers.frequencyToMidi(oscillator2.pitch);
 
     if (!oscillator1.isPlaying) {
       console.log("gain111", oscillator1.gainNode);
@@ -48,7 +49,7 @@ export default function SynthLayout1() {
     if (!oscillator2.isPlaying) {
       console.log("gain222", oscillator2.gainNode);
 
-      oscillator2.startOsc(freq);
+      oscillator2.startOsc(freq2);
     }
   };
 
@@ -63,15 +64,6 @@ export default function SynthLayout1() {
     }
   };
 
-  const handleSetWaveform1 = (wave) => {
-    const waveform = wave;
-    oscillator1.setWaveform(waveform);
-  };
-  const handleSetWaveform2 = (wave) => {
-    const waveform = wave;
-    oscillator2.setWaveform(waveform);
-  };
-
   return (
     <div className="layout-body">
       <div className="synth-container">
@@ -83,14 +75,8 @@ export default function SynthLayout1() {
         </div>
         <div className="module-controls">
           <div className="oscillators">
-            <Oscillator
-              oscillator={oscillator1}
-              handleSetWaveform={handleSetWaveform1}
-            />
-            <Oscillator2
-              oscillator2={oscillator2}
-              handleSetWaveform={handleSetWaveform2}
-            />
+            <Oscillator />
+            <Oscillator2 />
           </div>
 
           <FilterControls />

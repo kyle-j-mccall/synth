@@ -63,15 +63,14 @@ export class OscNode {
   }
 
   incrementPitch() {
+    console.log("clicked");
     const semitoneRatio = Math.pow(2, 1 / 12); // ratio of one semitone
-    this.state.pitch *= semitoneRatio;
-    this.oscNode.frequency.value = this.state.pitch;
+    this.pitch *= semitoneRatio;
   }
 
   decrementPitch() {
     const semitoneRatio = Math.pow(2, 1 / 12); // ratio of one semitone
-    this.state.pitch /= semitoneRatio;
-    this.oscNode.frequency.value = this.state.pitch;
+    this.pitch /= semitoneRatio;
   }
 
   setWaveform(waveform) {
@@ -82,6 +81,6 @@ export class OscNode {
   }
 
   setPitch(pitch) {
-    this.state.pitch = pitch;
+    this.pitch = pitch;
   }
 }

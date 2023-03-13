@@ -17,7 +17,7 @@ const Oscillator2 = ({}) => {
   console.log("osc2", oscillator2);
 
   const handleIncrement = () => {
-    console.log(oscillator2);
+    console.log("click");
     oscillator2.incrementPitch();
   };
 
