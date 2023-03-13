@@ -7,6 +7,7 @@ export class ADSRNode {
   releaseTime;
 
   constructor(audioContext, gainNode) {
+    // set initial adsr values
     this.audioContext = audioContext;
     this.gainNode = gainNode;
     this.attackTime = 0.3;
@@ -15,6 +16,7 @@ export class ADSRNode {
     this.releaseTime = 0.5;
   }
 
+  // trigger adsr envelope
   trigger() {
     const now = this.audioContext.currentTime;
     const gain = this.gainNode.gain;
@@ -27,12 +29,12 @@ export class ADSRNode {
     );
   }
 
-  release() {
+  release(release) {
     const now = this.audioContext.currentTime;
     const gain = this.gainNode.gain;
     gain.cancelScheduledValues(now);
     gain.setValueAtTime(gain.value, now);
-    gain.exponentialRampToValueAtTime(0.01, now + this.releaseTime);
+    gain.exponentialRampToValueAtTime(0.01, now + release);
   }
 
   setAttackTime(attackTime) {
