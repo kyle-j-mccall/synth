@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Knob } from "primereact/knob";
 import "./Filter.css";
+import { OscillatorContext } from "../../context/oscillatorContext";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function FilterControls() {
+  const [filterType, setFilterType] = useState("lowpass");
+  const { oscillator1, oscillator2 } = useContext(OscillatorContext);
+
+  const handleSetType = (e) => {
+    setFilterType(e.target.value);
+    oscillator1.filter.setType(filterType);
+    oscillator2.filter.setType(filterType);
+  };
+
   return (
     <div className="filter-container">
       <div className="cutoff-container">
+        <TextField
+          select
+          variant="standard"
+          id="standard-basic"
+          label="Filter Type"
+          onChange={(e) => handleSetType(e.target.value)}
+        >
+          <MenuItem value={"lowpass"}>Lowpass</MenuItem>
+          <MenuItem value={"highpass"}>Highpass</MenuItem>
+          <MenuItem value={"bandpass"}>Bandpass</MenuItem>
+          <MenuItem value={"notch"}>Notch</MenuItem>
+        </TextField>
         <div className="cutoff-knob">
           <Knob
             value={5}

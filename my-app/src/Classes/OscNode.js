@@ -43,7 +43,6 @@ export class OscNode {
       this.oscNode = this.audioContext.createOscillator();
       this.oscNode.type = this.waveform;
       this.oscNode.frequency.value = freq;
-
       this.oscNode.connect(this.filter.filter); // connect oscillator to filter
       this.filter.connect(this.gainNode); // connect filter to gain node
       this.gainNode.connect(this.audioContext.destination); // connect gain node to destination

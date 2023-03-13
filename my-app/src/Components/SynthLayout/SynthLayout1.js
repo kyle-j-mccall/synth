@@ -42,13 +42,10 @@ export default function SynthLayout1() {
     const freq2 = MidiNumbers.frequencyToMidi(oscillator2.pitch);
 
     if (!oscillator1.isPlaying) {
-      console.log("gain111", oscillator1.gainNode);
       oscillator1.startOsc(freq);
     }
 
     if (!oscillator2.isPlaying) {
-      console.log("gain222", oscillator2.gainNode);
-
       oscillator2.startOsc(freq2);
     }
   };

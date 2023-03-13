@@ -3,7 +3,7 @@
   grid-template-rows: 3fr 2fr;
   height: 100%;
   align-items: center;
-  background-color: rgb(37, 109, 133);
+  background-color: ivory;
   border-right: 2px solid black;
   border-left: 2px solid black;
   font-size: 3vh;
@@ -13,11 +13,8 @@
   -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.cutoff-container {
-}
-
 .cutoff-knob {
-  margin-top: 8vh;
+  margin-top: 4vh;
 }
 
 .res-knob {
