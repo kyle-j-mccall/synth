@@ -16,7 +16,7 @@ export class OscNode {
     this.isPlaying = false;
     this.pitch = 440; // default pitch is A4 (440 Hz)
     this.waveform = "sine"; // default waveform is sine
-    this.filter = new Filter(audioContext, "lowpass", 400, 1, 0);
+    this.filter = new Filter(audioContext, "highpass", 2000, 1, 0);
   }
 
   getGainNode() {

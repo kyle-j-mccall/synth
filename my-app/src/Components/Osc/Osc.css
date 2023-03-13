@@ -16,6 +16,10 @@
   fill: white !important;
 }
 
+.p-knob-text {
+  color: white;
+}
+
 .pitch-controls {
   display: flex;
   height: 100%;

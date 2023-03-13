@@ -9,12 +9,12 @@ import "./Osc.css";
 import { OscillatorContext } from "../../context/oscillatorContext";
 // import "primereact/resources/themes/fluent-light/theme.css";
 
-const Oscillator = ({}) => {
+const Oscillator2 = ({}) => {
   const { oscillator2 } = useContext(OscillatorContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
   const [volume, setVolume] = useState(0);
 
-  console.log(volume);
+  console.log("osc2", oscillator2);
 
   const handleIncrement = () => {
     console.log(oscillator2);
@@ -104,4 +104,4 @@ const Oscillator = ({}) => {
   );
 };
 
-export default Oscillator;
+export default Oscillator2;

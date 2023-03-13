@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext } from "react";
 import "./SynthLayout.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
@@ -9,6 +9,7 @@ import FilterControls from "../Filter/Filter";
 import FX from "../FX/FX";
 import ADSRControls from "../ADSR/ADSRControls";
 import { OscillatorContext } from "../../context/oscillatorContext";
+import Oscillator2 from "../Osc/Oscillator2";
 
 const MidiNumbers = require("react-piano").MidiNumbers;
 
@@ -86,7 +87,7 @@ export default function SynthLayout1() {
               oscillator={oscillator1}
               handleSetWaveform={handleSetWaveform1}
             />
-            <Oscillator
+            <Oscillator2
               oscillator2={oscillator2}
               handleSetWaveform={handleSetWaveform2}
             />

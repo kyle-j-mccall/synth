@@ -14,6 +14,8 @@ const Oscillator = ({}) => {
   const [semitoneNum, setSemitoneNum] = useState(0);
   const [volume, setVolume] = useState(0);
 
+  console.log("osc1", oscillator1);
+
   const handleIncrement = () => {
     console.log(oscillator1);
     oscillator1.incrementPitch();
@@ -87,12 +89,12 @@ const Oscillator = ({}) => {
               min={0}
               max={10}
               step={1}
-              // style={{ backgroundColor: "var(--highlight-bg)" }}
               strokeWidth={5}
               onChange={(e) => handleSetGain(e.value)}
               className="my-knob"
               rangeColor="rgb(37, 109, 133)"
               valueColor="rgb(229, 209, 250)"
+              textColor="white"
             />
             <p>Gain</p>
           </div>

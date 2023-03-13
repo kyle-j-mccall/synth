@@ -11,9 +11,6 @@ export const OscillatorProvider = ({ children }) => {
   const [oscillator1, setOscillator1] = useState(new OscNode(audioContext));
   const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
 
-  console.log("osc11111", oscillator1);
-  console.log("osc22222", oscillator2);
-
   return (
     <OscillatorContext.Provider
       value={{
