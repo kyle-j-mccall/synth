@@ -14,21 +14,11 @@ import Oscillator2 from "../Osc/Oscillator2";
 const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout1() {
-  const {
-    oscillator1,
-    oscillator2,
-    globalAttack,
-    globalDecay,
-    globalSustain,
-    globalRelease,
-  } = useContext(OscillatorContext);
+  const { oscillator1, oscillator2, globalAttack } =
+    useContext(OscillatorContext);
 
-  // convert adsr values from milliseconds to seconds
   let attackInSecs = globalAttack / 1000;
-  let decayInSecs = globalDecay / 1000;
-  let sustainInSecs = globalSustain / 1000;
-  let releaseInSecs = globalRelease / 1000;
-  console.log(releaseInSecs);
+  console.log(attackInSecs);
 
   MidiNumbers.midiToFrequency = function (midiNumber) {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
@@ -38,7 +28,6 @@ export default function SynthLayout1() {
     return 69 + 12 * Math.log2(frequency / 440);
   };
 
-  // create first and last note to determine note range for react-piano
   const firstNote = oscillator1.pitch
     ? MidiNumbers.frequencyToMidi(oscillator1.pitch)
     : MidiNumbers.frequencyToMidi(440);
@@ -51,28 +40,28 @@ export default function SynthLayout1() {
     keyboardConfig: KeyboardShortcuts.HOME_ROW,
   });
 
-  //play function for keyboard input
+  //function for keyboard input
   const playNote = (midiNumber) => {
-    // set key values to correspond with pitches of the two oscillators
     const freq = MidiNumbers.frequencyToMidi(oscillator1.pitch);
     const freq2 = MidiNumbers.frequencyToMidi(oscillator2.pitch);
-
-    // check if oscillators are playing
-    // pass adsr values to startOsc method
     if (!oscillator1.isPlaying) {
-      oscillator1.startOsc(freq, attackInSecs, decayInSecs, sustainInSecs);
+      oscillator1.startOsc(freq, attackInSecs);
     }
 
     if (!oscillator2.isPlaying) {
-      oscillator2.startOsc(freq2, attackInSecs, decayInSecs, sustainInSecs);
+      oscillator2.startOsc(freq2, attackInSecs);
     }
   };
 
   //stop keyboard input
   const stopNote = () => {
-    oscillator1.stopOsc(releaseInSecs);
-
-    oscillator2.stopOsc(releaseInSecs);
+    console.log(oscillator1.isPlaying);
+    if (oscillator1.isPlaying) {
+      oscillator1.stopOsc();
+    }
+    if (oscillator2.isPlaying) {
+      oscillator2.stopOsc();
+    }
   };
 
   return (

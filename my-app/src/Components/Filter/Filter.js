@@ -12,7 +12,6 @@ export default function FilterControls() {
   const [filterQ, setFilterQ] = useState(20);
   const { oscillator1, oscillator2 } = useContext(OscillatorContext);
 
-  // handler functions for setting filter values
   const handleSetType = (e) => {
     setFilterType(e.target.value);
     oscillator1.filter.setType(filterType);
