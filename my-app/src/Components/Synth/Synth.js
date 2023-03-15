@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Synth.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
@@ -18,9 +18,9 @@ const preset = require("./presets").presetState;
 
 export default function Synth() {
   const actx = new AudioContext();
-  console.log(preset);
+  const [currentOscillator, setCurrentOscillator] = useState(null);
+
   // create nodes
-  const oscillator = new OscillatorNode(actx);
   const gain = new Gain(actx);
   const volume = new Gain(actx);
   const filter = new BiquadFilter(actx);
@@ -28,19 +28,30 @@ export default function Synth() {
   // connect nodes
 
   const initSynth = () => {
-    syncState();
+    if (currentOscillator) {
+      currentOscillator.stop();
+    }
+
+    const newOscillator = new OscillatorNode(actx);
+    syncState(newOscillator);
     volume.connect(actx.destination);
     gain.connect(volume.getNode());
     filter.connect(gain.getNode());
-    oscillator.connect(filter.getNode());
-    oscillator.start();
+    newOscillator.connect(filter.getNode());
+    newOscillator.start();
+
+    setCurrentOscillator(newOscillator);
   };
+
   const stopnote = () => {
-    oscillator.stop();
+    if (currentOscillator) {
+      currentOscillator.stop();
+      setCurrentOscillator(null);
+    }
   };
 
   // sync nodes to preset state
-  const syncState = () => {
+  const syncState = (oscillator) => {
     volume.setGain(preset.masterVolume);
     oscillator.setType(preset.oscType);
     filter.setFrequency(preset.filterFreq);
