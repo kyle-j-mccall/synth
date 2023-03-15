@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import "./SynthLayout.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
@@ -13,13 +13,22 @@ import Oscillator2 from "../Osc/Oscillator2";
 
 const MidiNumbers = require("react-piano").MidiNumbers;
 
-export default function SynthLayout1() {
-  const { oscillator1, oscillator2, globalAttack } =
-    useContext(OscillatorContext);
+export default function SynthLayout1({}) {
+  const {
+    oscillator1,
+    oscillator2,
+    globalAttack,
+    globalDecay,
 
+    globalSustain,
+    globalRelease,
+  } = useContext(OscillatorContext);
+
+  // convert adsr values from milliseconds to seconds
   let attackInSecs = globalAttack / 1000;
-  console.log(attackInSecs);
-
+  let decayInSecs = globalDecay / 1000;
+  let sustainInSecs = globalSustain / 1000;
+  let releaseInSecs = globalRelease / 1000;
   MidiNumbers.midiToFrequency = function (midiNumber) {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
   };
@@ -45,11 +54,11 @@ export default function SynthLayout1() {
     const freq = MidiNumbers.frequencyToMidi(oscillator1.pitch);
     const freq2 = MidiNumbers.frequencyToMidi(oscillator2.pitch);
     if (!oscillator1.isPlaying) {
-      oscillator1.startOsc(freq, attackInSecs);
+      oscillator1.startOsc(freq, attackInSecs, decayInSecs, sustainInSecs);
     }
 
     if (!oscillator2.isPlaying) {
-      oscillator2.startOsc(freq2, attackInSecs);
+      oscillator2.startOsc(freq2, attackInSecs, decayInSecs, sustainInSecs);
     }
   };
 
@@ -57,10 +66,10 @@ export default function SynthLayout1() {
   const stopNote = () => {
     console.log(oscillator1.isPlaying);
     if (oscillator1.isPlaying) {
-      oscillator1.stopOsc();
+      oscillator1.stopOsc(releaseInSecs);
     }
     if (oscillator2.isPlaying) {
-      oscillator2.stopOsc();
+      oscillator2.stopOsc(releaseInSecs);
     }
   };
 
