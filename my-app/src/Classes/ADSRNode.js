@@ -27,13 +27,12 @@ export class ADSRNode {
     );
   }
 
-  release(release) {
+  release() {
     const now = this.audioContext.currentTime;
     const gain = this.gainNode.gain;
     gain.cancelScheduledValues(now);
     gain.setValueAtTime(gain.value, now);
     gain.exponentialRampToValueAtTime(0.01, now + this.releaseTime);
-    gain.exponentialRampToValueAtTime(0.01, now + release);
   }
 
   setAttackTime(attackTime) {

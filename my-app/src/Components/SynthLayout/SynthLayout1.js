@@ -14,20 +14,11 @@ import Oscillator2 from "../Osc/Oscillator2";
 const MidiNumbers = require("react-piano").MidiNumbers;
 
 export default function SynthLayout1() {
-  const {
-    oscillator1,
-    oscillator2,
-    globalAttack,
-    globalDecay,
-    globalSustain,
-    globalRelease,
-  } = useContext(OscillatorContext);
+  const { oscillator1, oscillator2, globalAttack } =
+    useContext(OscillatorContext);
 
-  // convert adsr values from milliseconds to seconds
   let attackInSecs = globalAttack / 1000;
-  let decayInSecs = globalDecay / 1000;
-  let sustainInSecs = globalSustain / 1000;
-  let releaseInSecs = globalRelease / 1000;
+  console.log(attackInSecs);
 
   MidiNumbers.midiToFrequency = function (midiNumber) {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
@@ -54,11 +45,11 @@ export default function SynthLayout1() {
     const freq = MidiNumbers.frequencyToMidi(oscillator1.pitch);
     const freq2 = MidiNumbers.frequencyToMidi(oscillator2.pitch);
     if (!oscillator1.isPlaying) {
-      oscillator1.startOsc(freq, attackInSecs, decayInSecs, sustainInSecs);
+      oscillator1.startOsc(freq, attackInSecs);
     }
 
     if (!oscillator2.isPlaying) {
-      oscillator2.startOsc(freq2, attackInSecs, decayInSecs, sustainInSecs);
+      oscillator2.startOsc(freq2, attackInSecs);
     }
   };
 
@@ -66,10 +57,10 @@ export default function SynthLayout1() {
   const stopNote = () => {
     console.log(oscillator1.isPlaying);
     if (oscillator1.isPlaying) {
-      oscillator1.stopOsc(releaseInSecs);
+      oscillator1.stopOsc();
     }
     if (oscillator2.isPlaying) {
-      oscillator2.stopOsc(releaseInSecs);
+      oscillator2.stopOsc();
     }
   };
 

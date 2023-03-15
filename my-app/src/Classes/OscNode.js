@@ -39,53 +39,33 @@ export class OscNode {
     this.setGain(newGain);
   }
 
-  startOsc(freq, attack, decay, sustain) {
+  startOsc(freq, attack) {
     if (!this.isPlaying) {
       this.oscNode = this.audioContext.createOscillator();
       const adsr = new ADSRNode(this.audioContext, this.gainNode);
       adsr.setAttackTime(attack); // set the attack time
 
-      // set ADSR values
-      adsr.setAttackTime(attack);
-      adsr.setDecayTime(decay);
-      adsr.setSustainLevel(sustain);
-
-      // set oscillator params
       this.oscNode.type = this.waveform;
       this.oscNode.frequency.value = freq;
-
-      // set up routing
       this.oscNode.connect(this.filter.filter); // connect oscillator to filter
       this.filter.connect(this.gainNode); // connect filter to gain node
       this.gainNode.connect(this.audioContext.destination); // connect gain node to destination
 
-      // trigger adsr then start oscillator
       adsr.trigger();
       this.oscNode.start();
       this.isPlaying = true;
     }
   }
 
-  stopOsc(release) {
+  stopOsc() {
     if (this.isPlaying) {
+      this.oscNode.stop();
+      this.oscNode.disconnect();
+      this.filter.disconnect();
       this.isPlaying = false;
-      const adsr = new ADSRNode(this.audioContext, this.gainNode);
-      // set ADSR release time
-      adsr.setReleaseTime(release);
-      console.log("oscrelease", release);
-      // trigger release of ADSR envelope before stopping the oscillator
-      adsr.release(release);
-
-      const now = this.audioContext.currentTime;
-      this.oscNode.stop(now + release);
-
-      setTimeout(() => {
-        this.oscNode.disconnect();
-        this.filter.disconnect();
-        this.isPlaying = false;
-      }, release * 1000);
     }
   }
+
   incrementPitch() {
     console.log("clicked");
     const semitoneRatio = Math.pow(2, 1 / 12); // ratio of one semitone
