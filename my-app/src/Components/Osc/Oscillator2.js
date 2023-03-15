@@ -5,36 +5,36 @@ import { Knob } from "primereact/knob";
 import sineIcon from "../../assets/sine.png";
 import sawIcon from "../../assets/saw.png";
 import squareIcon from "../../assets/square.png";
-import "./Osc1.css";
+import "./Osc2.css";
 import { OscillatorContext } from "../../context/oscillatorContext";
 
-const Oscillator = ({}) => {
-  const { oscillator1 } = useContext(OscillatorContext);
+const Oscillator2 = ({}) => {
+  const { oscillator2 } = useContext(OscillatorContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
   const [volume, setVolume] = useState(0);
 
-  // console.log("osc1", oscillator1);
+  // console.log("osc2", oscillator2);
 
   const handleIncrement = () => {
-    oscillator1.incrementPitch();
+    oscillator2.incrementPitch();
   };
 
   const handleDecrement = () => {
-    oscillator1.decrementPitch();
+    oscillator2.decrementPitch();
   };
 
   const handleSetWaveform = (wave) => {
     console.log(wave);
-    oscillator1.setWaveform(wave);
+    oscillator2.setWaveform(wave);
   };
 
   const handleSetGain = (value) => {
     setVolume(value);
-    oscillator1.adjustGain(value);
+    oscillator2.adjustGain(value);
   };
 
   return (
-    <div className="osc-component1">
+    <div className="osc-component2">
       <div className="pitch-controls">
         <div className="osc-pitch">
           <img
@@ -87,6 +87,7 @@ const Oscillator = ({}) => {
               min={0}
               max={10}
               step={1}
+              // style={{ backgroundColor: "var(--highlight-bg)" }}
               strokeWidth={5}
               onChange={(e) => handleSetGain(e.value)}
               className="my-knob"
@@ -102,4 +103,4 @@ const Oscillator = ({}) => {
   );
 };
 
-export default Oscillator;
+export default Oscillator2;

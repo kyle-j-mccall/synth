@@ -1,0 +1,35 @@
+.adsr-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  height: 100%;
+  align-items: center;
+  border-right: 2px solid black;
+  border-bottom: 1.5px solid black;
+  font-size: 3vh;
+  background-color: rgb(137, 203, 188);
+  box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  text-shadow: 0.75px 0.75px 0.75px black;
+}
+
+.attack-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.decay-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sustain-container {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.release-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

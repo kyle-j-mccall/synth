@@ -1,29 +1,48 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext } from "react";
 import "./SynthLayout.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
 import Oscillator from "../Osc/Oscillator";
-import ADSR from "../ADSR/ADSR";
 import Keyboard from "../Keyboard/Keyboard";
-import { OscNode } from "../../Classes/OscNode";
 import { KeyboardShortcuts } from "react-piano";
+import FilterControls from "../Filter/Filter";
+import FX from "../FX/FX";
+import ADSRControls from "../ADSR/ADSRControls";
+import { OscillatorContext } from "../../context/oscillatorContext";
+import Oscillator2 from "../Osc/Oscillator2";
 
 const MidiNumbers = require("react-piano").MidiNumbers;
 
-export default function SynthLayout1() {
-  const audioContext = new AudioContext();
-  const [oscillator1, setOscillator1] = useState(new OscNode(audioContext));
-  const [oscillator2, setOscillator2] = useState(new OscNode(audioContext));
-  const [waveform, setWaveform] = useState("sine"); // default waveform is "sine"
+export default function SynthLayout1({}) {
+  const {
+    oscillator1,
+    oscillator2,
+    globalAttack,
+    globalDecay,
 
-  console.log(oscillator1, oscillator2);
+    globalSustain,
+    globalRelease,
+  } = useContext(OscillatorContext);
 
+  // convert adsr values from milliseconds to seconds
+  let attackInSecs = globalAttack / 1000;
+  let decayInSecs = globalDecay / 1000;
+  let sustainInSecs = globalSustain / 1000;
+  let releaseInSecs = globalRelease / 1000;
   MidiNumbers.midiToFrequency = function (midiNumber) {
     return 440 * Math.pow(2, (midiNumber - 69) / 12);
   };
 
-  const firstNote = MidiNumbers.fromNote("c3");
-  const lastNote = MidiNumbers.fromNote("c4");
+  MidiNumbers.frequencyToMidi = function (frequency) {
+    return 69 + 12 * Math.log2(frequency / 440);
+  };
+
+  const firstNote = oscillator1.pitch
+    ? MidiNumbers.frequencyToMidi(oscillator1.pitch)
+    : MidiNumbers.frequencyToMidi(440);
+  const lastNote = oscillator1.pitch
+    ? MidiNumbers.frequencyToMidi(oscillator1.pitch * 2)
+    : MidiNumbers.frequencyToMidi(880);
   const keyboardShortcuts = KeyboardShortcuts.create({
     firstNote: firstNote,
     lastNote: lastNote,
@@ -32,28 +51,26 @@ export default function SynthLayout1() {
 
   //function for keyboard input
   const playNote = (midiNumber) => {
-    const freq = MidiNumbers.midiToFrequency(midiNumber);
-    // const [oscillator1, oscillator2] = oscillators;
-
-    oscillator1.setPitch(freq);
-    oscillator2.setPitch(freq);
-
-    oscillator1.setWaveform(waveform);
-    oscillator2.setWaveform(waveform);
-
-    if (!oscillator1.isPlaying()) {
-      oscillator1.start(freq);
+    const freq = MidiNumbers.frequencyToMidi(oscillator1.pitch);
+    const freq2 = MidiNumbers.frequencyToMidi(oscillator2.pitch);
+    if (!oscillator1.isPlaying) {
+      oscillator1.startOsc(freq, attackInSecs, decayInSecs, sustainInSecs);
     }
 
-    if (!oscillator2.isPlaying()) {
-      oscillator2.start(freq);
+    if (!oscillator2.isPlaying) {
+      oscillator2.startOsc(freq2, attackInSecs, decayInSecs, sustainInSecs);
     }
   };
 
   //stop keyboard input
   const stopNote = () => {
-    oscillator1.stop();
-    oscillator2.stop();
+    console.log(oscillator1.isPlaying);
+    if (oscillator1.isPlaying) {
+      oscillator1.stopOsc(releaseInSecs);
+    }
+    if (oscillator2.isPlaying) {
+      oscillator2.stopOsc(releaseInSecs);
+    }
   };
 
   return (
@@ -63,17 +80,17 @@ export default function SynthLayout1() {
           <div>Oscillators</div>
           <div>Filter</div>
           <div>ADSR</div>
-          <div>FX</div>
+          <div className="fx-title">FX</div>
         </div>
         <div className="module-controls">
           <div className="oscillators">
-            <Oscillator oscillator={oscillator1} waveform={waveform} />
-            <Oscillator oscillator={oscillator2} waveform={waveform} />
+            <Oscillator />
+            <Oscillator2 />
           </div>
-          <div className="filter-container">filter</div>
-          <div className="adsr-container">
-            <ADSR />
-          </div>
+
+          <FilterControls />
+          <ADSRControls />
+          <FX />
         </div>
       </div>
       <Keyboard

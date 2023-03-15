@@ -33,18 +33,28 @@
   -moz-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.7);
 }
 
+.fx-title {
+  font-family: "VT323", monospace;
+  font-size: 5vh;
+  margin-bottom: 1vh;
+  letter-spacing: 0.5vh;
+}
+
 .module-titles {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto;
+  z-index: 100;
+  grid-template-columns: 1fr 0.75fr 1fr 0.75fr;
   height: 100%;
+  margin: 0;
   justify-content: center;
   align-items: center;
-  font-size: 4vh;
+  font-size: 5vh;
   color: white;
   background-color: rgb(4, 41, 58);
-  text-shadow: 1px 1px 1px black;
-  border: 2px solid black;
+  text-shadow: 2px 2px 2px black;
+  border-top: 3px solid black;
+  border-bottom: 3px solid black;
+
   border-radius: 3px;
   box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
@@ -53,8 +63,7 @@
 
 .module-controls {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 0.75fr 1fr 0.75fr;
   height: 100%;
   justify-content: center;
   align-items: center;
@@ -63,7 +72,6 @@
 .oscillators {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr;
   height: 100%;
 }
 
@@ -120,4 +128,8 @@ button:hover {
 
 .wave-icon:hover {
   transform: scale(1.2);
+}
+
+.osc1-component {
+  background-color: red;
 }

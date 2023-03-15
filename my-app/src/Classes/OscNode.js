@@ -1,71 +1,121 @@
+import { ADSRNode } from "./ADSRNode";
+import { Filter } from "./FilterNode";
+
 export class OscNode {
+  oscNode;
+  gainNode;
+  pitch;
+  waveform;
+  isPlaying;
+  filter;
+
   constructor(audioContext) {
     this.audioContext = audioContext;
     this.gainNode = audioContext.createGain();
-    this.playing = false;
-    this.oscNode = audioContext.createOscillator();
-    this.state = {
-      pitch: 440, // default pitch is A4 (440 Hz)
-      waveform: "sine",
-      gain: 0.5,
-    };
-
-    // connect the oscillator node to the gain node
-    this.oscNode.connect(this.gainNode);
-
-    // connect the gain node to the destination
-    this.gainNode.connect(audioContext.destination);
+    this.gainNode.gain.value = 0.5; // default gain is 0.5
+    this.oscNode = null;
+    this.isPlaying = false;
+    this.pitch = 440; // default pitch is A4 (440 Hz)
+    this.waveform = "sine"; // default waveform is sine
+    this.filter = new Filter(audioContext, "lowpass", 100, 1, 0);
   }
 
-  isPlaying() {
-    return this.playing;
+  getGainNode() {
+    return this.gainNode;
   }
 
-  start(freq) {
-    if (!this.playing) {
-      // check if the Oscillator is already playing
+  setGain(volume) {
+    // const gain = volume / 100;
+    this.gainNode.gain.value = volume;
+  }
+
+  adjustGain(change) {
+    const currentGain = this.gainNode.gain.value;
+    const converted = change / 10;
+    const newGain =
+      converted > currentGain
+        ? currentGain + change / 10
+        : currentGain - Math.abs(change) / 10;
+    this.setGain(newGain);
+  }
+
+  startOsc(freq, attack, decay, sustain) {
+    if (!this.isPlaying) {
       this.oscNode = this.audioContext.createOscillator();
-      this.oscNode.type = this.state.waveform;
+      const adsr = new ADSRNode(this.audioContext, this.gainNode);
+      adsr.setAttackTime(attack); // set the attack time
+
+      // set ADSR values
+      adsr.setAttackTime(attack);
+      adsr.setDecayTime(decay);
+      adsr.setSustainLevel(sustain);
+
+      // set oscillator params
+      this.oscNode.type = this.waveform;
       this.oscNode.frequency.value = freq;
-      this.gainNode.gain.value = this.state.gain; // set the gain value
-      this.oscNode.connect(this.audioContext.destination);
+
+      // set up routing
+      this.oscNode.connect(this.filter.filter); // connect oscillator to filter
+      this.filter.connect(this.gainNode); // connect filter to gain node
+      this.gainNode.connect(this.audioContext.destination); // connect gain node to destination
+
+      // trigger adsr then start oscillator
+      adsr.trigger();
       this.oscNode.start();
-      this.playing = true;
+      this.isPlaying = true;
     }
   }
 
-  stop() {
-    if (this.playing) {
-      // check if the Oscillator is currently playing
-      this.oscNode.stop();
-      this.playing = false;
-    }
-  }
+  stopOsc(release) {
+    if (this.isPlaying) {
+      const adsr = new ADSRNode(this.audioContext, this.gainNode);
+      // set ADSR release time
+      adsr.setReleaseTime(release);
+      console.log("oscrelease", release);
+      // trigger release of ADSR envelope before stopping the oscillator
+      adsr.release(release);
 
-  setGain(gain) {
-    this.state.gain = gain;
-    this.gainNode.gain.value = this.state.gain;
+      const now = this.audioContext.currentTime;
+      this.oscNode.stop(now + release);
+
+      setTimeout(() => {
+        this.oscNode.disconnect();
+        this.filter.disconnect();
+        this.isPlaying = false;
+      }, release * 1000);
+    }
   }
 
   incrementPitch() {
     const semitoneRatio = Math.pow(2, 1 / 12); // ratio of one semitone
-    this.state.pitch *= semitoneRatio;
-    this.oscNode.frequency.value = this.state.pitch;
+    this.pitch *= semitoneRatio;
   }
 
   decrementPitch() {
     const semitoneRatio = Math.pow(2, 1 / 12); // ratio of one semitone
-    this.state.pitch /= semitoneRatio;
-    this.oscNode.frequency.value = this.state.pitch;
+    this.pitch /= semitoneRatio;
   }
 
   setWaveform(waveform) {
-    this.state.waveform = waveform;
-    this.oscNode.type = this.state.waveform;
+    this.waveform = waveform;
+    if (this.isPlaying) {
+      this.oscNode.type = waveform;
+    }
   }
 
   setPitch(pitch) {
-    this.state.pitch = pitch;
-    this.oscNode.frequency.value = this.state.pitch;
+    this.pitch = pitch;
+  }
+
+  setFilterCutoff(frequency) {
+    this.filter.setCutoff(frequency);
+  }
+
+  setFilterType(type) {
+    this.filter.setType(type);
+  }
+
+  setFilterQ(Q) {
+    this.filter.setQ(Q);
   }
 }
