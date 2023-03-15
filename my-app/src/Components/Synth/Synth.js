@@ -8,22 +8,24 @@ import { KeyboardShortcuts } from "react-piano";
 import FilterControls from "../Filter/Filter";
 import FX from "../FX/FX";
 import ADSRControls from "../ADSR/ADSRControls";
-import Oscillator2 from "../Osc/Oscillator2";
 import { Gain } from "../../Nodes/Gain";
 import { Button } from "@mui/material";
 import { OscillatorNode } from "../../Nodes/OscillatorNode";
-import { Filter } from "../../Classes/FilterNode";
 import { BiquadFilter } from "../../Nodes/Filter";
+import { ADSRNode } from "../../Classes/ADSRNode";
 const preset = require("./presets").presetState;
 
 export default function Synth() {
   const actx = new AudioContext();
   const [currentOscillator, setCurrentOscillator] = useState(null);
-
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [attack, setAttack] = useState(preset.gainAttack);
+  console.log(preset.gainAttack);
   // create nodes
   const gain = new Gain(actx);
   const volume = new Gain(actx);
   const filter = new BiquadFilter(actx);
+  const adsr = new ADSRNode(actx, gain);
 
   // connect nodes
 
@@ -31,23 +33,17 @@ export default function Synth() {
     if (currentOscillator) {
       currentOscillator.stop();
     }
-
     const newOscillator = new OscillatorNode(actx);
-    syncState(newOscillator);
+
     volume.connect(actx.destination);
     gain.connect(volume.getNode());
     filter.connect(gain.getNode());
     newOscillator.connect(filter.getNode());
+
     newOscillator.start();
 
+    syncState(newOscillator);
     setCurrentOscillator(newOscillator);
-  };
-
-  const stopnote = () => {
-    if (currentOscillator) {
-      currentOscillator.stop();
-      setCurrentOscillator(null);
-    }
   };
 
   // sync nodes to preset state
@@ -57,6 +53,27 @@ export default function Synth() {
     filter.setFrequency(preset.filterFreq);
     filter.setType(preset.filterType);
     filter.setQ(preset.filterQ);
+    if (attack) {
+      gain.setGain(0); // Reset Volume
+      gain.setGain(preset.masterVolume, preset.gainAttack);
+    } else {
+      gain.setGain(preset.masterVolume);
+    }
+  };
+
+  const stopnote = () => {
+    if (currentOscillator) {
+      setIsPlaying(false);
+      currentOscillator.stop();
+      setCurrentOscillator(null);
+    }
+  };
+
+  const keydown = () => {
+    if (!isPlaying) {
+      setIsPlaying(true);
+      initSynth();
+    }
   };
 
   return (
@@ -71,7 +88,7 @@ export default function Synth() {
         <div className="module-controls">
           <div className="oscillators">
             <Oscillator />
-            <Oscillator2 />
+            {/* <Oscillator2 /> */}
           </div>
 
           <FilterControls />
@@ -79,16 +96,18 @@ export default function Synth() {
           <FX />
         </div>
       </div>
-      <Button
-        onMouseDown={() => {
-          initSynth();
-        }}
-        onMouseUp={() => {
-          stopnote();
-        }}
-      >
-        Play
-      </Button>
+      <div>
+        <Button
+          onMouseDown={() => {
+            keydown();
+          }}
+          onMouseUp={() => {
+            stopnote();
+          }}
+        >
+          Play
+        </Button>
+      </div>
     </div>
   );
 }

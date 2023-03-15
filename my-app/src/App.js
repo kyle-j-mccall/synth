@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <OscillatorProvider>
         {/* <SynthLayout1 className="synth-component" /> */}
-        <Synth />
+        <Synth className="synth-component" />
       </OscillatorProvider>
     </div>
   );

@@ -10,7 +10,6 @@ export class Gain {
   getNode = () => this.node;
   getGain = () => this.node.gain.value;
 
-  // Setters
   setGain = (val, time = 0) => {
     time
       ? this.node.gain.setTargetAtTime(val, this.actx.currentTime, time)

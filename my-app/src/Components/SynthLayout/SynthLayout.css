@@ -1,4 +1,4 @@
-.layout-body {
+/* .layout-body {
   display: grid;
   min-width: 100%;
   height: 100vh;
@@ -23,7 +23,6 @@
   color: black;
   display: grid;
   grid-template-rows: 1fr 8fr;
-  /* grid-template-columns: 1fr 1fr 1fr; */
   grid-template-columns: 1fr;
   justify-content: center;
   align-items: center;
@@ -132,4 +131,4 @@ button:hover {
 
 .osc1-component {
   background-color: red;
-}
+} */
