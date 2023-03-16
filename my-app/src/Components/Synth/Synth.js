@@ -1,4 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import "./Synth.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
@@ -13,17 +19,16 @@ import { BiquadFilter } from "../../Nodes/Filter";
 import { PresetContext } from "../../context/presetContext";
 
 export default function Synth() {
-  const actx = new AudioContext();
+  const actx = useMemo(() => new AudioContext(), []);
   const { preset } = useContext(PresetContext);
   // const { oscillator } = preset;
   const [currentOscillator, setCurrentOscillator] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  console.log("preset", preset);
 
   // create nodes
-  const gain = new Gain(actx);
-  const volume = new Gain(actx);
-  const filter = new BiquadFilter(actx);
+  const gain = useMemo(() => new Gain(actx), [actx]);
+  const volume = useMemo(() => new Gain(actx), [actx]);
+  const filter = useMemo(() => new BiquadFilter(actx), [actx]);
 
   // connect nodes
 
@@ -45,19 +50,28 @@ export default function Synth() {
   };
 
   // sync nodes to preset state
-  const syncState = (oscillator) => {
-    volume.setGain(preset.masterVolume);
-    oscillator.setType(preset.oscType);
-    filter.setFrequency(preset.filterFreq);
-    filter.setType(preset.filterType);
-    filter.setQ(preset.filterQ);
-    if (preset.gainAttack) {
-      gain.setGain(0); // Reset Volume
-      gain.setGain(preset.masterVolume, preset.gainAttack);
-    } else {
-      gain.setGain(preset.masterVolume);
+  const syncState = useCallback(
+    (oscillator) => {
+      volume.setGain(preset.masterVolume);
+      oscillator.setType(preset.oscType);
+      filter.setFrequency(preset.filterFreq);
+      filter.setType(preset.filterType);
+      filter.setQ(preset.filterQ);
+      if (preset.gainAttack) {
+        gain.setGain(0); // Reset Volume
+        gain.setGain(preset.masterVolume, preset.gainAttack);
+      } else {
+        gain.setGain(preset.masterVolume);
+      }
+    },
+    [preset, volume, filter, gain]
+  );
+
+  useEffect(() => {
+    if (currentOscillator) {
+      syncState(currentOscillator);
     }
-  };
+  }, [preset, currentOscillator, syncState]);
 
   const stopnote = () => {
     if (currentOscillator) {

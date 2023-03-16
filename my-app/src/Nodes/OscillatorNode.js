@@ -5,6 +5,7 @@ export class OscillatorNode {
     this.actx = actx;
     this.node = this.actx.createOscillator();
     this.WAVEFORMS = ["sine", "triangle", "square", "sawtooth"];
+
     this.maxFreq = 44100;
 
     this.gainNode = new Gain(this.actx);

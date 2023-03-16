@@ -4,9 +4,6 @@ import { OscillatorNode } from "../Nodes/OscillatorNode";
 export const PresetContext = React.createContext();
 
 export const PresetProvider = ({ children }) => {
-  const actx = new AudioContext();
-  const [oscillator, setOscillatar] = useState(new OscillatorNode(actx));
-
   const [preset, setPreset] = useState({
     masterVolume: 0.75,
     gainAttack: 1,
@@ -21,9 +18,7 @@ export const PresetProvider = ({ children }) => {
   console.log(preset);
 
   return (
-    <PresetContext.Provider
-      value={{ preset, setPreset, oscillator, setOscillatar, actx }}
-    >
+    <PresetContext.Provider value={{ preset, setPreset }}>
       {children}
     </PresetContext.Provider>
   );
