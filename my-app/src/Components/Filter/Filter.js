@@ -1,33 +1,34 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Knob } from "primereact/knob";
 import "./Filter.css";
-import { OscillatorContext } from "../../context/oscillatorContext";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { InputLabel } from "@mui/material";
+import { PresetContext } from "../../context/presetContext";
 
 export default function FilterControls() {
-  const [filterType, setFilterType] = useState("lowpass");
-  const [cutoff, setCutoff] = useState(5000);
-  const [filterQ, setFilterQ] = useState(20);
-  const { oscillator1, oscillator2 } = useContext(OscillatorContext);
+  const { preset, setPreset } = useContext(PresetContext);
+  const { filterFreq, filterQ, filterType } = preset;
 
   const handleSetType = (e) => {
-    setFilterType(e.target.value);
-    oscillator1.filter.setType(filterType);
-    oscillator2.filter.setType(filterType);
+    setPreset({
+      ...preset,
+      filterType: e.target.value,
+    });
   };
 
   const handleSetCutoff = (e) => {
-    setCutoff(e.value);
-    oscillator1.filter.setCutoff(e.value);
-    oscillator2.filter.setCutoff(e.value);
+    setPreset({
+      ...preset,
+      filterFreq: e.value,
+    });
   };
 
-  const handleSetFilterRes = (e) => {
-    setFilterQ(e.value);
-    oscillator1.filter.setCutoff(e.value);
-    oscillator2.filter.setCutoff(e.value);
+  const handleSetFilterQ = (e) => {
+    setPreset({
+      ...preset,
+      filterQ: e.value,
+    });
   };
 
   return (
@@ -39,7 +40,7 @@ export default function FilterControls() {
           variant="standard"
           id="standard-basic"
           value={filterType}
-          onChange={(e) => handleSetType(e.target.value)}
+          onChange={(e) => handleSetType(e)}
         >
           <MenuItem value={"lowpass"}>Lowpass</MenuItem>
           <MenuItem value={"highpass"}>Highpass</MenuItem>
@@ -48,7 +49,7 @@ export default function FilterControls() {
         </TextField>
         <div className="cutoff-knob">
           <Knob
-            value={cutoff}
+            value={filterFreq}
             size={100}
             min={20}
             max={20000}
@@ -72,7 +73,7 @@ export default function FilterControls() {
             rangeColor="rgb(245, 110, 179)"
             valueColor="rgb(203, 228, 222)"
             textColor="white"
-            onChange={(e) => handleSetFilterRes(e)}
+            onChange={(e) => handleSetFilterQ(e)}
           />
           <p>Q</p>
         </div>

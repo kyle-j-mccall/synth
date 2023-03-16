@@ -1,31 +1,35 @@
 import React, { useContext } from "react";
 import { Knob } from "primereact/knob";
 import "./ADSR.css";
-import { OscillatorContext } from "../../context/oscillatorContext";
+import { PresetContext } from "../../context/presetContext";
 
 export default function ADSRControls() {
-  const {
-    globalAttack,
-    setGlobalAttack,
-    globalDecay,
-    setGlobalDecay,
-    globalSustain,
-    setGlobalSustain,
-    globalRelease,
-    setGlobalRelease,
-  } = useContext(OscillatorContext);
+  const { preset, setPreset } = useContext(PresetContext);
+  const { gainAttack, gainDecay, gainSustain, gainRelease } = preset;
 
   const handleSetAttack = (e) => {
-    setGlobalAttack(e.value);
+    setPreset({
+      ...preset,
+      gainAttack: e.value,
+    });
   };
   const handleSetDecay = (e) => {
-    setGlobalDecay(e.value);
+    setPreset({
+      ...preset,
+      gainDecay: e.value,
+    });
   };
   const handleSetSustain = (e) => {
-    setGlobalSustain(e.value);
+    setPreset({
+      ...preset,
+      gainSustain: e.value,
+    });
   };
   const handleSetRelease = (e) => {
-    setGlobalRelease(e.value);
+    setPreset({
+      ...preset,
+      gainRelease: e.value,
+    });
   };
 
   return (
@@ -33,11 +37,11 @@ export default function ADSRControls() {
       <div className="attack-container">
         <p>Attack</p>
         <Knob
-          value={globalAttack}
+          value={gainAttack}
           size={60}
-          min={50}
-          max={5000}
-          step={10}
+          min={1}
+          max={6}
+          step={1}
           onChange={(e) => handleSetAttack(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"
@@ -47,10 +51,10 @@ export default function ADSRControls() {
       </div>
       <div className="decay-container">
         <Knob
-          value={globalDecay}
+          value={gainDecay}
           size={60}
-          min={0}
-          max={5000}
+          min={1}
+          max={6}
           onChange={(e) => handleSetDecay(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"
@@ -62,10 +66,10 @@ export default function ADSRControls() {
       <div className="sustain-container">
         <p>Sustain</p>
         <Knob
-          value={globalSustain}
+          value={gainSustain}
           size={60}
-          min={0}
-          max={5000}
+          min={1}
+          max={6}
           onChange={(e) => handleSetSustain(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"
@@ -75,10 +79,10 @@ export default function ADSRControls() {
       </div>
       <div className="release-container">
         <Knob
-          value={globalRelease}
+          value={gainRelease}
           size={60}
-          min={0}
-          max={6000}
+          min={1}
+          max={6}
           onChange={(e) => handleSetRelease(e)}
           strokeWidth={6}
           rangeColor="rgb(37, 109, 133)"

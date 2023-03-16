@@ -6,31 +6,30 @@ import sineIcon from "../../assets/sine.png";
 import sawIcon from "../../assets/saw.png";
 import squareIcon from "../../assets/square.png";
 import "./Osc1.css";
-import { OscillatorContext } from "../../context/oscillatorContext";
+import { PresetContext } from "../../context/presetContext";
 
-const Oscillator = ({}) => {
-  const { oscillator1 } = useContext(OscillatorContext);
+const Oscillator = () => {
+  const { preset, setPreset } = useContext(PresetContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
   const [volume, setVolume] = useState(0);
 
-  // console.log("osc1", oscillator1);
-
-  const handleIncrement = () => {
-    oscillator1.incrementPitch();
+  const handleIncrement = (val) => {
+    setSemitoneNum(val);
   };
 
-  const handleDecrement = () => {
-    oscillator1.decrementPitch();
+  const handleDecrement = (val) => {
+    semitoneNum(val);
   };
 
   const handleSetWaveform = (wave) => {
-    console.log(wave);
-    oscillator1.setWaveform(wave);
+    setPreset({
+      ...preset,
+      oscType: wave,
+    });
   };
 
   const handleSetGain = (value) => {
     setVolume(value);
-    oscillator1.adjustGain(value);
   };
 
   return (

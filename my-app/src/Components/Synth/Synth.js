@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Synth.css";
 import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
 import Oscillator from "../Osc/Oscillator";
-import Keyboard from "../Keyboard/Keyboard";
-import { KeyboardShortcuts } from "react-piano";
 import FilterControls from "../Filter/Filter";
 import FX from "../FX/FX";
 import ADSRControls from "../ADSR/ADSRControls";
@@ -12,20 +10,18 @@ import { Gain } from "../../Nodes/Gain";
 import { Button } from "@mui/material";
 import { OscillatorNode } from "../../Nodes/OscillatorNode";
 import { BiquadFilter } from "../../Nodes/Filter";
-import { ADSRNode } from "../../Classes/ADSRNode";
-const preset = require("./presets").presetState;
+import { PresetContext } from "../../context/presetContext";
 
 export default function Synth() {
   const actx = new AudioContext();
+  const { preset } = useContext(PresetContext);
   const [currentOscillator, setCurrentOscillator] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [attack, setAttack] = useState(preset.gainAttack);
-  console.log(preset.gainAttack);
+
   // create nodes
   const gain = new Gain(actx);
   const volume = new Gain(actx);
   const filter = new BiquadFilter(actx);
-  const adsr = new ADSRNode(actx, gain);
 
   // connect nodes
 
@@ -53,7 +49,7 @@ export default function Synth() {
     filter.setFrequency(preset.filterFreq);
     filter.setType(preset.filterType);
     filter.setQ(preset.filterQ);
-    if (attack) {
+    if (preset.gainAttack) {
       gain.setGain(0); // Reset Volume
       gain.setGain(preset.masterVolume, preset.gainAttack);
     } else {
