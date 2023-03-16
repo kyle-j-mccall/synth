@@ -57,12 +57,13 @@ export default function Synth() {
       filter.setFrequency(preset.filterFreq);
       filter.setType(preset.filterType);
       filter.setQ(preset.filterQ);
-      if (preset.gainAttack) {
-        gain.setGain(0); // Reset Volume
-        gain.setGain(preset.masterVolume, preset.gainAttack);
-      } else {
-        gain.setGain(preset.masterVolume);
-      }
+      gain.setGain(0); // Reset Volume
+      gain.setGain(preset.masterVolume, preset.gainAttack);
+      gain.setGain(
+        preset.masterVolume * preset.gainSustain,
+        preset.gainDecay,
+        preset.gainAttack
+      );
     },
     [preset, volume, filter, gain]
   );
@@ -75,9 +76,12 @@ export default function Synth() {
 
   const stopnote = () => {
     if (currentOscillator) {
-      setIsPlaying(false);
-      currentOscillator.stop();
-      setCurrentOscillator(null);
+      gain.setGain(0, 0, preset.gainRelease);
+      setTimeout(() => {
+        setIsPlaying(false);
+        currentOscillator.stop();
+        setCurrentOscillator(null);
+      }, preset.gainRelease * 1000);
     }
   };
 

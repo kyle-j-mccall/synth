@@ -1,15 +1,14 @@
 import React, { useContext, useState } from "react";
-import { OscillatorNode } from "../Nodes/OscillatorNode";
 
 export const PresetContext = React.createContext();
 
 export const PresetProvider = ({ children }) => {
   const [preset, setPreset] = useState({
     masterVolume: 0.75,
-    gainAttack: 1,
-    gainDecay: 1,
-    gainSustain: 1,
-    gainRelease: 2,
+    gainAttack: 0.1,
+    gainDecay: 0.2,
+    gainSustain: 0.3,
+    gainRelease: 0.4,
     oscType: "sawtooth",
     filterFreq: 1000,
     filterType: "lowpass",
