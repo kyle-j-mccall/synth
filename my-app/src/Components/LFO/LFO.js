@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { InputLabel } from "@mui/material";
 import { Knob } from "primereact/knob";
 import "./LFO.css";
+import { PresetContext } from "../../context/presetContext";
 
 export default function LFO() {
+  const { preset, setPreset } = useContext(PresetContext);
+  const { lfoRate, lfoType, lfoDepth } = preset;
+
+  const handleSetRate = (e) => {
+    setPreset({
+      ...preset,
+      lfoRate: e.value,
+    });
+  };
+  const handleSetType = (e) => {
+    setPreset({
+      ...preset,
+      lfoType: e.target.value,
+    });
+  };
+  const handleSetDepth = (e) => {
+    setPreset({
+      ...preset,
+      lfoDepth: e.value,
+    });
+  };
+
   return (
     <div className="lfo-container">
       <div className="wave-select-container">
@@ -14,40 +37,48 @@ export default function LFO() {
           select
           variant="standard"
           id="standard-basic"
-          value={"lowpass"}
+          value={lfoType}
+          onChange={(e) => {
+            handleSetType(e);
+          }}
         >
-          <MenuItem value={"lowpass"}>Sine</MenuItem>
-          <MenuItem value={"highpass"}>Saw Down</MenuItem>
-          <MenuItem value={"bandpass"}>Saw Up</MenuItem>
-          <MenuItem value={"notch"}>Square</MenuItem>
+          <MenuItem value={"sine"}>Sine</MenuItem>
+          <MenuItem value={"sawtooth"}>Saw</MenuItem>
+          <MenuItem value={"square"}>Square</MenuItem>
         </TextField>
       </div>
       <div className="lfo-controls">
-        <div className="speed-knob">
+        <div className="rate-knob">
           <Knob
-            value={0}
+            value={lfoRate}
             size={100}
-            min={20}
-            max={20000}
-            strokeWidth={6}
-            rangeColor="rgb(245, 110, 179)"
-            valueColor="rgb(203, 228, 222)"
-            textColor="white"
-          />
-          <p>Speed</p>
-        </div>
-        <div className="amount-knob">
-          <Knob
-            value={0}
-            size={50}
             min={0}
             max={100}
             strokeWidth={6}
+            onChange={(e) => {
+              handleSetRate(e);
+            }}
             rangeColor="rgb(245, 110, 179)"
             valueColor="rgb(203, 228, 222)"
             textColor="white"
           />
-          <p>amount</p>
+          <p>Rate</p>
+        </div>
+        <div className="depth-knob">
+          <Knob
+            value={lfoDepth}
+            size={50}
+            min={0}
+            max={1000}
+            strokeWidth={6}
+            onChange={(e) => {
+              handleSetDepth(e);
+            }}
+            rangeColor="rgb(245, 110, 179)"
+            valueColor="rgb(203, 228, 222)"
+            textColor="white"
+          />
+          <p>Depth</p>
         </div>
       </div>
     </div>

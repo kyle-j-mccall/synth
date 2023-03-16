@@ -19,12 +19,15 @@ import { BiquadFilter } from "../../Nodes/Filter";
 import { PresetContext } from "../../context/presetContext";
 import MasterVolume from "../Master/Master";
 import LFO from "../LFO/LFO";
+import { LFONode } from "../../Nodes/LFONode";
 
 export default function Synth() {
   const actx = useMemo(() => new AudioContext(), []);
   const { preset } = useContext(PresetContext);
   const [currentOscillator, setCurrentOscillator] = useState(null);
+  const [lfo, setLFO] = useState(() => new LFONode(actx));
   const [isPlaying, setIsPlaying] = useState(false);
+  const [stopTimeoutId, setStopTimeoutId] = useState(null);
 
   // create nodes
   const gain = useMemo(() => new Gain(actx), [actx]);
@@ -41,14 +44,23 @@ export default function Synth() {
     // Create a new OscillatorNode
     const newOscillator = new OscillatorNode(actx);
 
+    if (lfo.isConnected()) {
+      lfo.disconnect();
+    }
+
+    const newLFO = new LFONode(actx);
+
     // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
     gain.connect(volume.getNode());
     filter.connect(gain.getNode());
     newOscillator.connect(filter.getNode());
+    // Connect the LFO to the filter's frequency parameter
+    newLFO.connect(filter.getNode().frequency);
 
     // Start the new oscillator
     newOscillator.start();
+    newLFO.start();
 
     // Sync the state of the new oscillator with the current preset values
     syncState(newOscillator);
@@ -56,6 +68,7 @@ export default function Synth() {
     updateGain();
     // Update the state with the new oscillator
     setCurrentOscillator(newOscillator);
+    setLFO(newLFO);
   };
 
   const syncState = useCallback(
@@ -65,8 +78,11 @@ export default function Synth() {
       filter.setFrequency(preset.filterFreq);
       filter.setType(preset.filterType);
       filter.setQ(preset.filterQ);
+      lfo.setType(preset.lfoType);
+      lfo.setRate(preset.lfoRate);
+      lfo.setDepth(preset.lfoDepth);
     },
-    [preset, volume, filter]
+    [preset, volume, filter, lfo]
   );
 
   // Function to update the gain based on the preset's ADSR settings
@@ -107,13 +123,16 @@ export default function Synth() {
         .gain.setValueAtTime(gain.getNode().gain.value, actx.currentTime);
       // Ramp down the gain to 0 during the release phase
       gain.getNode().gain.linearRampToValueAtTime(0, releaseEndTime);
-      // Stop the oscillator and disconnect the gain node after the release phase ends
-      setTimeout(() => {
+      // Stop the LFO and the oscillator after the release phase ends
+      const timeoutId = setTimeout(() => {
         setIsPlaying(false);
+        lfo.stop(); // Stop the LFO before stopping the oscillator
         currentOscillator.stop();
+        lfo.disconnect();
         gain.disconnect(); // Add this line to disconnect the gain node
         setCurrentOscillator(null);
       }, preset.gainRelease * 1000);
+      setStopTimeoutId(timeoutId); // Save the timeout id
     }
   };
 
@@ -121,6 +140,16 @@ export default function Synth() {
     if (!isPlaying) {
       setIsPlaying(true);
       initSynth();
+    }
+  };
+
+  const keyUp = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      if (stopTimeoutId !== null) {
+        clearTimeout(stopTimeoutId); // Cancel the scheduled stopnote function
+      }
+      stopnote();
     }
   };
 
@@ -153,7 +182,7 @@ export default function Synth() {
             keydown();
           }}
           onMouseUp={() => {
-            stopnote();
+            keyUp();
           }}
         >
           Play
