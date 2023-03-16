@@ -33,8 +33,8 @@ export default function FilterControls() {
 
   return (
     <div className="filter-container">
-      <div className="cutoff-container">
-        <InputLabel>Filter Type</InputLabel>
+      <div className="select-container">
+        <InputLabel>Filter</InputLabel>
         <TextField
           select
           variant="standard"
@@ -47,6 +47,8 @@ export default function FilterControls() {
           <MenuItem value={"bandpass"}>Bandpass</MenuItem>
           <MenuItem value={"notch"}>Notch</MenuItem>
         </TextField>
+      </div>
+      <div className="filter-controls">
         <div className="cutoff-knob">
           <Knob
             value={filterFreq}
@@ -61,8 +63,6 @@ export default function FilterControls() {
           />
           <p>Cutoff</p>
         </div>
-      </div>
-      <div className="res-container">
         <div className="res-knob">
           <Knob
             value={filterQ}

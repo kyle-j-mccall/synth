@@ -7,7 +7,7 @@
   background-position: center;
   background-size: cover;
   display: grid;
-  grid-template-rows: 4.5fr 2fr;
+  grid-template-rows: 6fr 2fr;
   grid-template-columns: 1fr;
   justify-content: center;
   align-items: center;
@@ -17,7 +17,7 @@
 
 .synth-container {
   width: 75vw;
-  height: 65vh;
+  height: 70vh;
   background-color: rgb(203, 228, 222);
   border: 2px solid;
   color: black;
@@ -40,9 +40,9 @@
 }
 
 .module-titles {
-  display: grid;
+  display: flex;
   z-index: 100;
-  grid-template-columns: 1fr 0.75fr 1fr 0.75fr;
+
   height: 100%;
   margin: 0;
   justify-content: center;
@@ -51,10 +51,9 @@
   color: white;
   background-color: rgb(4, 41, 58);
   text-shadow: 2px 2px 2px black;
-  border-top: 3px solid black;
-  border-bottom: 3px solid black;
+  border: 2px solid black;
 
-  border-radius: 3px;
+  /* border-radius: 3px; */
   box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 3px 5px 0px rgba(0, 0, 0, 0.75);
@@ -62,16 +61,30 @@
 
 .module-controls {
   display: grid;
-  grid-template-columns: 1fr 0.75fr 1fr 0.75fr;
+  grid-template-columns: 1fr 1fr 2fr;
   height: 100%;
   justify-content: center;
   align-items: center;
 }
 
-.oscillators {
+.left-column {
   display: grid;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr 1fr;
   height: 100%;
+}
+.left1-column {
+  height: 100%;
+}
+
+.right-half {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+}
+
+.right-top {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
 }
 
 .osc-pitch-controls {

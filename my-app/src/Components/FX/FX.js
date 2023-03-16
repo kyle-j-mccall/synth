@@ -6,7 +6,6 @@ export default function FX() {
   return (
     <div className="fx-container">
       <div className="delay-container">
-        <p>Delay</p>
         <Knob
           className="delay-knob"
           value={10}
@@ -18,9 +17,9 @@ export default function FX() {
           valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
+        <p>Delay</p>
       </div>
       <div className="reverb-container">
-        <p>Reverb</p>
         <Knob
           className="reverb-knob"
           value={10}
@@ -32,6 +31,7 @@ export default function FX() {
           valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
+        <p>Reverb</p>
       </div>
     </div>
   );

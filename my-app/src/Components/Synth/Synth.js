@@ -17,6 +17,8 @@ import { Button } from "@mui/material";
 import { OscillatorNode } from "../../Nodes/OscillatorNode";
 import { BiquadFilter } from "../../Nodes/Filter";
 import { PresetContext } from "../../context/presetContext";
+import MasterVolume from "../Master/Master";
+import LFO from "../LFO/LFO";
 
 export default function Synth() {
   const actx = useMemo(() => new AudioContext(), []);
@@ -126,19 +128,23 @@ export default function Synth() {
     <div className="layout-body">
       <div className="synth-container">
         <div className="module-titles">
-          <div>Oscillators</div>
-          <div>Filter</div>
-          <div>ADSR</div>
-          <div className="fx-title">FX</div>
+          <div>LL 419 Mini</div>
         </div>
         <div className="module-controls">
-          <div className="oscillators">
+          <div className="left-column">
             <Oscillator />
+            <FilterControls />
           </div>
-
-          <FilterControls />
-          <ADSRControls />
-          <FX />
+          <div className="left1-column">
+            <ADSRControls />
+          </div>
+          <div className="right-half">
+            <div className="right-top">
+              <LFO />
+              <MasterVolume />
+            </div>
+            <FX />
+          </div>
         </div>
       </div>
       <div>
