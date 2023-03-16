@@ -15,8 +15,10 @@ import { PresetContext } from "../../context/presetContext";
 export default function Synth() {
   const actx = new AudioContext();
   const { preset } = useContext(PresetContext);
+  // const { oscillator } = preset;
   const [currentOscillator, setCurrentOscillator] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  console.log("preset", preset);
 
   // create nodes
   const gain = new Gain(actx);
@@ -84,7 +86,6 @@ export default function Synth() {
         <div className="module-controls">
           <div className="oscillators">
             <Oscillator />
-            {/* <Oscillator2 /> */}
           </div>
 
           <FilterControls />

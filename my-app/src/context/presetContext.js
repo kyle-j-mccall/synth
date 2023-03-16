@@ -1,14 +1,18 @@
 import React, { useContext, useState } from "react";
+import { OscillatorNode } from "../Nodes/OscillatorNode";
 
 export const PresetContext = React.createContext();
 
 export const PresetProvider = ({ children }) => {
+  const actx = new AudioContext();
+  const [oscillator, setOscillatar] = useState(new OscillatorNode(actx));
+
   const [preset, setPreset] = useState({
     masterVolume: 0.75,
-    gainAttack: 4,
-    gainDecay: 0,
+    gainAttack: 1,
+    gainDecay: 1,
     gainSustain: 1,
-    gainRelease: 0,
+    gainRelease: 2,
     oscType: "sawtooth",
     filterFreq: 1000,
     filterType: "lowpass",
@@ -17,7 +21,9 @@ export const PresetProvider = ({ children }) => {
   console.log(preset);
 
   return (
-    <PresetContext.Provider value={{ preset, setPreset }}>
+    <PresetContext.Provider
+      value={{ preset, setPreset, oscillator, setOscillatar, actx }}
+    >
       {children}
     </PresetContext.Provider>
   );
