@@ -21,7 +21,6 @@ import { PresetContext } from "../../context/presetContext";
 export default function Synth() {
   const actx = useMemo(() => new AudioContext(), []);
   const { preset } = useContext(PresetContext);
-  // const { oscillator } = preset;
   const [currentOscillator, setCurrentOscillator] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -46,10 +45,10 @@ export default function Synth() {
     newOscillator.start();
 
     syncState(newOscillator);
+    updateGain();
     setCurrentOscillator(newOscillator);
   };
 
-  // sync nodes to preset state
   const syncState = useCallback(
     (oscillator) => {
       volume.setGain(preset.masterVolume);
@@ -57,16 +56,25 @@ export default function Synth() {
       filter.setFrequency(preset.filterFreq);
       filter.setType(preset.filterType);
       filter.setQ(preset.filterQ);
-      gain.setGain(0); // Reset Volume
-      gain.setGain(preset.masterVolume, preset.gainAttack);
-      gain.setGain(
-        preset.masterVolume * preset.gainSustain,
-        preset.gainDecay,
-        preset.gainAttack
-      );
     },
-    [preset, volume, filter, gain]
+    [preset, volume, filter]
   );
+
+  const updateGain = useCallback(() => {
+    const attackEndTime = actx.currentTime + preset.gainAttack;
+    const decayEndTime = attackEndTime + preset.gainDecay;
+
+    gain.setGain(0); // Reset Volume
+    gain
+      .getNode()
+      .gain.linearRampToValueAtTime(preset.masterVolume, attackEndTime);
+    gain
+      .getNode()
+      .gain.linearRampToValueAtTime(
+        preset.masterVolume * preset.gainSustain,
+        decayEndTime
+      );
+  }, [preset, gain, actx]);
 
   useEffect(() => {
     if (currentOscillator) {
@@ -76,10 +84,15 @@ export default function Synth() {
 
   const stopnote = () => {
     if (currentOscillator) {
-      gain.setGain(0, 0, preset.gainRelease);
+      const releaseEndTime = actx.currentTime + preset.gainRelease;
+      gain
+        .getNode()
+        .gain.setValueAtTime(gain.getNode().gain.value, actx.currentTime);
+      gain.getNode().gain.linearRampToValueAtTime(0, releaseEndTime);
       setTimeout(() => {
         setIsPlaying(false);
         currentOscillator.stop();
+        gain.disconnect(); // Add this line to disconnect the gain node
         setCurrentOscillator(null);
       }, preset.gainRelease * 1000);
     }

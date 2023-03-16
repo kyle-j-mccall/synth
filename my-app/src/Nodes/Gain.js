@@ -26,4 +26,6 @@ export class Gain {
         : this.node.gain.setValueAtTime(val, this.actx.currentTime);
     }
   };
+
+  disconnect = () => this.node.disconnect();
 }

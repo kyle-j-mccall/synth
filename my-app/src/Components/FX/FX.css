@@ -1,6 +1,6 @@
 .fx-container {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   height: 100%;
   align-items: center;
   border-right: 2px solid black;
