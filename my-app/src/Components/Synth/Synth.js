@@ -29,23 +29,30 @@ export default function Synth() {
   const volume = useMemo(() => new Gain(actx), [actx]);
   const filter = useMemo(() => new BiquadFilter(actx), [actx]);
 
-  // connect nodes
-
+  // Function to initialize the synth, set up connections, and start the oscillator
   const initSynth = () => {
+    // If there's an existing oscillator, stop it
     if (currentOscillator) {
       currentOscillator.stop();
     }
+
+    // Create a new OscillatorNode
     const newOscillator = new OscillatorNode(actx);
 
+    // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
     gain.connect(volume.getNode());
     filter.connect(gain.getNode());
     newOscillator.connect(filter.getNode());
 
+    // Start the new oscillator
     newOscillator.start();
 
+    // Sync the state of the new oscillator with the current preset values
     syncState(newOscillator);
+    // Update the gain values based on the preset's ADSR settings
     updateGain();
+    // Update the state with the new oscillator
     setCurrentOscillator(newOscillator);
   };
 
@@ -60,14 +67,18 @@ export default function Synth() {
     [preset, volume, filter]
   );
 
+  // Function to update the gain based on the preset's ADSR settings
   const updateGain = useCallback(() => {
+    // Calculate the end times for the attack and decay phases
     const attackEndTime = actx.currentTime + preset.gainAttack;
     const decayEndTime = attackEndTime + preset.gainDecay;
 
     gain.setGain(0); // Reset Volume
+    // Ramp up the gain to the master volume during the attack phase
     gain
       .getNode()
       .gain.linearRampToValueAtTime(preset.masterVolume, attackEndTime);
+    // Ramp down the gain to the sustain level during the decay phase
     gain
       .getNode()
       .gain.linearRampToValueAtTime(
@@ -76,19 +87,25 @@ export default function Synth() {
       );
   }, [preset, gain, actx]);
 
+  // Sync the state of the current oscillator whenever the preset or oscillator changes
   useEffect(() => {
     if (currentOscillator) {
       syncState(currentOscillator);
     }
   }, [preset, currentOscillator, syncState]);
 
+  // Function to stop the currently playing note
   const stopnote = () => {
     if (currentOscillator) {
+      // Calculate the end time for the release phase
       const releaseEndTime = actx.currentTime + preset.gainRelease;
+      // Set the gain value at the current time
       gain
         .getNode()
         .gain.setValueAtTime(gain.getNode().gain.value, actx.currentTime);
+      // Ramp down the gain to 0 during the release phase
       gain.getNode().gain.linearRampToValueAtTime(0, releaseEndTime);
+      // Stop the oscillator and disconnect the gain node after the release phase ends
       setTimeout(() => {
         setIsPlaying(false);
         currentOscillator.stop();
