@@ -10,7 +10,12 @@ export default function LFO() {
     <div className="lfo-container">
       <div className="wave-select-container">
         <InputLabel>Shape</InputLabel>
-        <TextField select variant="standard" id="standard-basic" value={"wave"}>
+        <TextField
+          select
+          variant="standard"
+          id="standard-basic"
+          value={"lowpass"}
+        >
           <MenuItem value={"lowpass"}>Sine</MenuItem>
           <MenuItem value={"highpass"}>Saw Down</MenuItem>
           <MenuItem value={"bandpass"}>Saw Up</MenuItem>
