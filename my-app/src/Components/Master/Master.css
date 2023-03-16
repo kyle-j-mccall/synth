@@ -1,0 +1,14 @@
+.volume-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  border: 1px solid black;
+  font-size: 3.2vh;
+  font-family: "VT323", monospace;
+  box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  text-shadow: 0.75px 0.75px 0.75px black;
+  justify-content: space-evenly;
+}

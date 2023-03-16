@@ -1,13 +1,14 @@
-import { Gain } from "./GainNode";
+import { Gain } from "./Gain";
 
-export class Oscillator {
-  constructor(AC) {
-    this.AC = AC;
-    this.node = this.AC.createOscillator();
+export class OscillatorNode {
+  constructor(actx) {
+    this.actx = actx;
+    this.node = this.actx.createOscillator();
     this.WAVEFORMS = ["sine", "triangle", "square", "sawtooth"];
+
     this.maxFreq = 44100;
 
-    this.gainNode = new Gain(this.AC);
+    this.gainNode = new Gain(this.actx);
     this.node.connect(this.gainNode.getNode());
   }
 
@@ -25,8 +26,12 @@ export class Oscillator {
   setFreq = (freq, time = 0) => {
     if (freq < 0 || freq > this.maxFreq) return false;
     time
-      ? this.node.frequency.setTargetAtTime(freq, this.AC.currentTime, time)
-      : this.node.frequency.setValueAtTime(freq, this.AC.currentTime);
+      ? this.node.frequency.setTargetAtTime(freq, this.actx.currentTime, time)
+      : this.node.frequency.setValueAtTime(freq, this.actx.currentTime);
   };
   setGain = (val) => this.gainNode.setGain(val);
+
+  stop() {
+    this.node.stop();
+  }
 }

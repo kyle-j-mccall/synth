@@ -1,6 +1,6 @@
 .fx-container {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   height: 100%;
   align-items: center;
   border-right: 2px solid black;
@@ -10,7 +10,6 @@
   -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
   text-shadow: 0.75px 0.75px 0.75px black;
-  border-radius: 4px;
 }
 
 .delay-container {
@@ -19,7 +18,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border-bottom: 1.5px solid black;
+  border: 1px solid black;
   height: 100%;
   background-color: rgb(62, 67, 46);
 }
@@ -27,7 +26,7 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  border-bottom: 1.5px solid black;
+  border: 1px solid black;
 
   align-items: center;
   flex-direction: column;

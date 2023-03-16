@@ -1,4 +1,4 @@
-.filter-container {
+.lfo-container {
   display: grid;
   grid-template-rows: 1fr 3fr;
   height: 100%;
@@ -13,7 +13,7 @@
   -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.filter-controls {
+.lfo-controls {
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: center;
@@ -21,7 +21,7 @@
   align-items: center;
 }
 
-.select-container {
+.wave-select-container {
   display: flex;
   flex-direction: column;
 }

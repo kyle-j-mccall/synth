@@ -6,36 +6,36 @@ import sineIcon from "../../assets/sine.png";
 import sawIcon from "../../assets/saw.png";
 import squareIcon from "../../assets/square.png";
 import "./Osc1.css";
-import { OscillatorContext } from "../../context/oscillatorContext";
+import { PresetContext } from "../../context/presetContext";
 
-const Oscillator = ({}) => {
-  const { oscillator1 } = useContext(OscillatorContext);
+const Oscillator = () => {
+  const { preset, setPreset } = useContext(PresetContext);
   const [semitoneNum, setSemitoneNum] = useState(0);
   const [volume, setVolume] = useState(0);
 
-  // console.log("osc1", oscillator1);
-
-  const handleIncrement = () => {
-    oscillator1.incrementPitch();
+  const handleIncrement = (val) => {
+    setSemitoneNum(val);
   };
 
-  const handleDecrement = () => {
-    oscillator1.decrementPitch();
+  const handleDecrement = (val) => {
+    semitoneNum(val);
   };
 
   const handleSetWaveform = (wave) => {
-    console.log(wave);
-    oscillator1.setWaveform(wave);
+    setPreset({
+      ...preset,
+      oscType: wave,
+    });
   };
 
   const handleSetGain = (value) => {
     setVolume(value);
-    oscillator1.adjustGain(value);
   };
 
   return (
     <div className="osc-component1">
-      <div className="pitch-controls">
+      <div>Oscillator</div>
+      <div className="oscillator-controls">
         <div className="osc-pitch">
           <img
             className="pitch-arrow"
@@ -57,44 +57,44 @@ const Oscillator = ({}) => {
             }}
           />
         </div>
-      </div>
-      <div className="osc-container">
-        <div className="osc-cell">
-          <div className="osc-waves">
-            <img
-              className="wave-icon"
-              src={sineIcon}
-              alt="sine-icon"
-              onClick={() => handleSetWaveform("sine")}
-            />
-            <img
-              className="wave-icon"
-              src={sawIcon}
-              alt="saw-icon"
-              onClick={() => handleSetWaveform("sawtooth")}
-            />
-            <img
-              className="wave-icon"
-              src={squareIcon}
-              alt="square-icon"
-              onClick={() => handleSetWaveform("square")}
-            />
-          </div>
-          <div className="osc-freq-knob">
-            <Knob
-              value={volume}
-              size={80}
-              min={0}
-              max={10}
-              step={1}
-              strokeWidth={5}
-              onChange={(e) => handleSetGain(e.value)}
-              className="my-knob"
-              rangeColor="rgb(37, 109, 133)"
-              valueColor="rgb(229, 209, 250)"
-              textColor="white"
-            />
-            <p>Gain</p>
+        <div className="osc-container">
+          <div className="osc-cell">
+            <div className="osc-waves">
+              <img
+                className="wave-icon"
+                src={sineIcon}
+                alt="sine-icon"
+                onClick={() => handleSetWaveform("sine")}
+              />
+              <img
+                className="wave-icon"
+                src={sawIcon}
+                alt="saw-icon"
+                onClick={() => handleSetWaveform("sawtooth")}
+              />
+              <img
+                className="wave-icon"
+                src={squareIcon}
+                alt="square-icon"
+                onClick={() => handleSetWaveform("square")}
+              />
+            </div>
+            <div className="osc-freq-knob">
+              <Knob
+                value={volume}
+                size={80}
+                min={0}
+                max={10}
+                step={1}
+                strokeWidth={5}
+                onChange={(e) => handleSetGain(e.value)}
+                className="my-knob"
+                rangeColor="rgb(37, 109, 133)"
+                valueColor="rgb(229, 209, 250)"
+                textColor="white"
+              />
+              <p>Gain</p>
+            </div>
           </div>
         </div>
       </div>
