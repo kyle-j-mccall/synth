@@ -38,6 +38,7 @@ export default function LFO() {
           variant="standard"
           id="standard-basic"
           value={lfoType}
+          style={{ width: "10vw" }}
           onChange={(e) => {
             handleSetType(e);
           }}
@@ -67,7 +68,7 @@ export default function LFO() {
         <div className="depth-knob">
           <Knob
             value={lfoDepth}
-            size={50}
+            size={70}
             min={0}
             max={1000}
             strokeWidth={6}

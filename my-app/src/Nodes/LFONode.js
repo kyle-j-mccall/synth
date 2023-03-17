@@ -24,6 +24,8 @@ export class LFONode {
     return this.connected;
   }
 
+  getNode = () => this.node;
+
   disconnect() {
     this.lfoNode.disconnect(); // Disconnect the LFO oscillator from the depth (gain) node
     this.depthNode.disconnect(); // Disconnect the depth (gain) node from the target node

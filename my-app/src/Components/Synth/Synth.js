@@ -10,7 +10,6 @@ import "react-piano/dist/styles.css";
 import "react-awesome-button/dist/styles.css";
 import Oscillator from "../Osc/Oscillator";
 import FilterControls from "../Filter/Filter";
-import FX from "../FX/FX";
 import ADSRControls from "../ADSR/ADSRControls";
 import { Gain } from "../../Nodes/Gain";
 import { Button } from "@mui/material";
@@ -20,6 +19,9 @@ import { PresetContext } from "../../context/presetContext";
 import MasterVolume from "../Master/Master";
 import LFO from "../LFO/LFO";
 import { LFONode } from "../../Nodes/LFONode";
+import Reverb from "../FX/Reverb/Reverb";
+import { DelayNode } from "../../Nodes/DelayNode";
+import Delay from "../FX/Delay/Delay";
 
 export default function Synth() {
   const actx = useMemo(() => new AudioContext(), []);
@@ -33,6 +35,7 @@ export default function Synth() {
   const gain = useMemo(() => new Gain(actx), [actx]);
   const volume = useMemo(() => new Gain(actx), [actx]);
   const filter = useMemo(() => new BiquadFilter(actx), [actx]);
+  const delay = useMemo(() => new DelayNode(actx), [actx]);
 
   // Function to initialize the synth, set up connections, and start the oscillator
   const initSynth = () => {
@@ -47,23 +50,27 @@ export default function Synth() {
     if (lfo.isConnected()) {
       lfo.disconnect();
     }
+    syncState(newOscillator);
+
+    delay.setDryWet(preset.delayWet);
 
     const newLFO = new LFONode(actx);
 
     // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
     gain.connect(volume.getNode());
-    filter.connect(gain.getNode());
-    newOscillator.connect(filter.getNode());
-    // Connect the LFO to the filter's frequency parameter
+    delay.getDryNode().connect(gain.getNode());
+    delay.getWetNode().connect(gain.getNode());
+
+    filter.connect(delay.getDelayNode());
     newLFO.connect(filter.getNode().frequency);
+    newOscillator.connect(filter.getNode());
 
     // Start the new oscillator
     newOscillator.start();
     newLFO.start();
 
     // Sync the state of the new oscillator with the current preset values
-    syncState(newOscillator);
     // Update the gain values based on the preset's ADSR settings
     updateGain();
     // Update the state with the new oscillator
@@ -81,8 +88,11 @@ export default function Synth() {
       lfo.setType(preset.lfoType);
       lfo.setRate(preset.lfoRate);
       lfo.setDepth(preset.lfoDepth);
+      delay.setFeedback(preset.delayFeedback);
+      delay.setDelayTime(preset.delayTime);
+      delay.setDryWet(preset.delayWet);
     },
-    [preset, volume, filter, lfo]
+    [preset, volume, filter, lfo, delay]
   );
 
   // Function to update the gain based on the preset's ADSR settings
@@ -172,7 +182,10 @@ export default function Synth() {
               <LFO />
               <MasterVolume />
             </div>
-            <FX />
+            <div className="right-bottom">
+              <Delay />
+              <Reverb />
+            </div>
           </div>
         </div>
       </div>

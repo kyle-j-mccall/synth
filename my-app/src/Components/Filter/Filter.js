@@ -66,7 +66,7 @@ export default function FilterControls() {
         <div className="res-knob">
           <Knob
             value={filterQ}
-            size={50}
+            size={70}
             min={0}
             max={100}
             strokeWidth={6}
