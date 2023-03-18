@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Knob } from "primereact/knob";
 import "./Delay.css";
+import { PresetContext } from "../../../context/presetContext";
 
 export default function Delay() {
+  const { preset, setPreset } = useContext(PresetContext);
+  const { delayTime, delayFeedback, delayWet } = preset;
+
+  const handleSetTime = (e) => {
+    setPreset({
+      ...preset,
+      delayTime: e.value / 1000,
+    });
+  };
+  const handleSetFeedback = (e) => {
+    setPreset({
+      ...preset,
+      delayFeedback: e.value / 1000,
+    });
+  };
+  const handleSetWet = (e) => {
+    setPreset({
+      ...preset,
+      delayWet: e.value / 1000,
+    });
+  };
+
   return (
     <div className="delay-container">
       <div className="delay-title">
@@ -14,11 +37,15 @@ export default function Delay() {
             <p>Time</p>
             <Knob
               className="time-knob"
-              value={10}
+              value={delayTime * 1000}
               size={60}
               min={0}
-              max={50}
+              max={1000}
+              step={10}
               strokeWidth={6}
+              onChange={(e) => {
+                handleSetTime(e);
+              }}
               rangeColor="rgb(37, 109, 133)"
               valueColor="rgb(229, 209, 250)"
               textColor="white"
@@ -29,11 +56,15 @@ export default function Delay() {
             <p>Feedback</p>
             <Knob
               className="feedback-knob"
-              value={10}
+              value={delayFeedback * 1000}
               size={60}
               min={0}
-              max={50}
+              max={1000}
+              step={10}
               strokeWidth={6}
+              onChange={(e) => {
+                handleSetFeedback(e);
+              }}
               rangeColor="rgb(37, 109, 133)"
               valueColor="rgb(229, 209, 250)"
               textColor="white"
@@ -45,11 +76,15 @@ export default function Delay() {
           <p>Dry/Wet</p>
           <Knob
             className="dw-knob"
-            value={10}
+            value={delayWet * 1000}
             size={60}
+            step={10}
             min={0}
-            max={50}
+            max={1000}
             strokeWidth={6}
+            onChange={(e) => {
+              handleSetWet(e);
+            }}
             rangeColor="rgb(37, 109, 133)"
             valueColor="rgb(229, 209, 250)"
             textColor="white"

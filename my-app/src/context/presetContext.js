@@ -16,9 +16,9 @@ export const PresetProvider = ({ children }) => {
     lfoRate: 0,
     lfoDepth: 0,
     lfoType: "sine",
-    delayTime: 0.7,
-    delayFeedback: 0.7,
-    delayWet: 0.7,
+    delayTime: 0.3,
+    delayFeedback: 0.5,
+    delayWet: 0.3,
   });
   console.log(preset);
 

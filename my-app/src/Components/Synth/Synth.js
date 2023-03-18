@@ -37,8 +37,24 @@ export default function Synth() {
   const filter = useMemo(() => new BiquadFilter(actx), [actx]);
   const delay = useMemo(() => new DelayNode(actx), [actx]);
 
+  const keyToNoteMap = {
+    A: 130.81, // C3
+    W: 138.59, // C#3
+    S: 146.83, // D3
+    E: 155.56, // D#3
+    D: 164.81, // E3
+    F: 174.61, // F3
+    T: 185.0, // F#3
+    G: 196.0, // G3
+    Y: 207.65, // G#3
+    H: 220.0, // A3
+    U: 233.08, // A#3
+    J: 246.94, // B3
+    K: 261.63, // C4
+  };
+
   // Function to initialize the synth, set up connections, and start the oscillator
-  const initSynth = () => {
+  const initSynth = (note) => {
     // If there's an existing oscillator, stop it
     if (currentOscillator) {
       currentOscillator.stop();
@@ -52,7 +68,7 @@ export default function Synth() {
     }
     syncState(newOscillator);
 
-    delay.setDryWet(preset.delayWet);
+    // delay.setDryWet(preset.delayWet);
 
     const newLFO = new LFONode(actx);
 
@@ -65,6 +81,7 @@ export default function Synth() {
     filter.connect(delay.getDelayNode());
     newLFO.connect(filter.getNode().frequency);
     newOscillator.connect(filter.getNode());
+    newOscillator.setFreq(note);
 
     // Start the new oscillator
     newOscillator.start();
@@ -122,6 +139,38 @@ export default function Synth() {
     }
   }, [preset, currentOscillator, syncState]);
 
+  useEffect(() => {
+    // Define handleKeyDown and handleKeyUp within useEffect
+    const handleKeyDown = (event) => {
+      const key = event.key.toUpperCase();
+      const note = keyToNoteMap[key];
+
+      if (note) {
+        event.preventDefault();
+        keydown(note);
+      }
+    };
+
+    const handleKeyUp = (event) => {
+      const key = event.key.toUpperCase();
+      const note = keyToNoteMap[key];
+
+      if (note) {
+        event.preventDefault();
+        keyUp();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+    // Remove handleKeyDown and handleKeyUp from the dependency array
+  });
+
   // Function to stop the currently playing note
   const stopnote = () => {
     if (currentOscillator) {
@@ -146,10 +195,10 @@ export default function Synth() {
     }
   };
 
-  const keydown = () => {
+  const keydown = (note) => {
     if (!isPlaying) {
       setIsPlaying(true);
-      initSynth();
+      initSynth(note);
     }
   };
 
