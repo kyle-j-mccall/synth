@@ -63,22 +63,20 @@ export default function Synth() {
     // Create a new OscillatorNode
     const newOscillator = new OscillatorNode(actx);
 
-    if (lfo.isConnected()) {
+    if (lfo) {
       lfo.disconnect();
     }
     syncState(newOscillator);
-
-    // delay.setDryWet(preset.delayWet);
 
     const newLFO = new LFONode(actx);
 
     // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
     gain.connect(volume.getNode());
-    delay.getDryNode().connect(gain.getNode());
-    delay.getWetNode().connect(gain.getNode());
+    delay.getDryNode().connect(volume.getNode());
+    delay.getWetNode().connect(volume.getNode());
 
-    filter.connect(delay.getDelayNode());
+    filter.connect(gain.getNode());
     newLFO.connect(filter.getNode().frequency);
     newOscillator.connect(filter.getNode());
     newOscillator.setFreq(note);
@@ -173,6 +171,8 @@ export default function Synth() {
 
   // Function to stop the currently playing note
   const stopnote = () => {
+    setIsPlaying(false);
+
     if (currentOscillator) {
       // Calculate the end time for the release phase
       const releaseEndTime = actx.currentTime + preset.gainRelease;
@@ -185,8 +185,9 @@ export default function Synth() {
       // Stop the LFO and the oscillator after the release phase ends
       const timeoutId = setTimeout(() => {
         setIsPlaying(false);
-        lfo.stop(); // Stop the LFO before stopping the oscillator
         currentOscillator.stop();
+        lfo.stop();
+
         lfo.disconnect();
         gain.disconnect(); // Add this line to disconnect the gain node
         setCurrentOscillator(null);
