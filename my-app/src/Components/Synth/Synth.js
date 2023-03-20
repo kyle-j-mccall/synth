@@ -71,12 +71,11 @@ export default function Synth() {
     const newLFO = new LFONode(actx);
 
     // Set up connections between nodes in the audio graph
+    // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
-    gain.connect(volume.getNode());
-    delay.getDryNode().connect(volume.getNode());
-    delay.getWetNode().connect(volume.getNode());
-
-    filter.connect(gain.getNode());
+    delay.connect(volume.getNode());
+    filter.connect(delay.getDelayNode()); // Connect the filter node to the delay node's input
+    gain.setGain(0);
     newLFO.connect(filter.getNode().frequency);
     newOscillator.connect(filter.getNode());
     newOscillator.setFreq(note);

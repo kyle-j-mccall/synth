@@ -10,36 +10,27 @@ class DelayNode {
     this.wetGain = new Gain(actx);
 
     this.delayNode.connect(this.feedbackGain.getNode());
-    this.feedbackGain.connect(this.wetGain.getNode());
     this.feedbackGain.connect(this.delayNode);
-    this.inputGain.connect(this.dryGain.getNode()); // Add this line
-    this.inputGain.connect(this.delayNode); // Add this line
+    this.inputGain.connect(this.dryGain.getNode());
+    this.inputGain.connect(this.delayNode);
+    this.delayNode.connect(this.wetGain.getNode()); // Add this line
 
     this.maxDelayTime = 1;
   }
 
   getDelayNode() {
-    return this.delayNode;
+    return this.inputGain.getNode(); // Change this line
   }
 
-  // connect(target) {
-  //   this.dryGain.connect(target);
-  //   this.wetGain.connect(target);
-  //   console.log("target", target);
-  //   console.log("connectdry", this.dryGain.getGain());
-  //   console.log("connectwet", this.wetGain.getGain());
-  // }
   connect(target) {
-    this.inputGain.connect(target); // Change this line
-  }
-  disconnect() {
-    this.inputGain.disconnect(); // Change this line
+    this.dryGain.connect(target);
+    this.wetGain.connect(target);
   }
 
-  // disconnect() {
-  //   this.dryGain.disconnect();
-  //   this.wetGain.disconnect();
-  // }
+  disconnect() {
+    this.dryGain.disconnect();
+    this.wetGain.disconnect();
+  }
 
   setDryWet(value) {
     this.dryGain.setGain(1 - value);
