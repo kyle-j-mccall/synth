@@ -6,7 +6,6 @@ import { PresetContext } from "../../context/presetContext";
 export default function MasterVolume() {
   const { preset, setPreset } = useContext(PresetContext);
   const { masterVolume } = preset;
-  console.log(masterVolume);
 
   const handleSetMasterVol = (e) => {
     setPreset({

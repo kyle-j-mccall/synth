@@ -1,0 +1,44 @@
+.delay-container {
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+  color: black;
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+  height: 100%;
+  background-color: rgb(120, 192, 136);
+}
+
+.delay-title {
+  color: black;
+  font-size: 3vh;
+}
+
+.delay-controls {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+
+.top {
+  display: flex;
+}
+
+.time-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2vw;
+}
+
+.feedback-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

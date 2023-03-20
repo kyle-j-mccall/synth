@@ -33,7 +33,6 @@
 }
 
 .fx-title {
-  font-family: "VT323", monospace;
   font-size: 5vh;
   margin-bottom: 1vh;
   letter-spacing: 0.5vh;
@@ -85,6 +84,11 @@
 .right-top {
   display: grid;
   grid-template-columns: 3fr 2fr;
+}
+
+.right-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .osc-pitch-controls {

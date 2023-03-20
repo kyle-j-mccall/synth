@@ -10,9 +10,15 @@ export const PresetProvider = ({ children }) => {
     gainSustain: 0.3,
     gainRelease: 0.4,
     oscType: "sawtooth",
-    filterFreq: 1000,
+    filterFreq: 3000,
     filterType: "lowpass",
     filterQ: 0,
+    lfoRate: 0,
+    lfoDepth: 0,
+    lfoType: "sine",
+    delayTime: 0.3,
+    delayFeedback: 0.5,
+    delayWet: 0.3,
   });
   console.log(preset);
 

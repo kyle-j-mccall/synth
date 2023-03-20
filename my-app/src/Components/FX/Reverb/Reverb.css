@@ -1,0 +1,17 @@
+.reverb-container {
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+  width: 100%;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+  height: 100%;
+  background-color: rgb(55, 59, 133);
+}
+
+.reverb-title {
+  color: white;
+  font-size: 3vh;
+}
