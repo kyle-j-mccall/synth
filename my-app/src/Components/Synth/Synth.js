@@ -74,10 +74,10 @@ export default function Synth() {
     // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
     delay.connect(volume.getNode());
-    filter.connect(delay.getDelayNode()); // Connect the filter node to the delay node's input
-    gain.setGain(0);
+    gain.connect(delay.getDelayNode()); // Connect the gain node to the delay node's input
     newLFO.connect(filter.getNode().frequency);
     newOscillator.connect(filter.getNode());
+    filter.connect(gain.getNode()); // Connect the filter node to the gain node's input
     newOscillator.setFreq(note);
 
     // Start the new oscillator
