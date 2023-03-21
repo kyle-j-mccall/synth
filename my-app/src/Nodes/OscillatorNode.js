@@ -31,6 +31,10 @@ export class OscillatorNode {
   };
   setGain = (val) => this.gainNode.setGain(val);
 
+  setDetune(val) {
+    this.node.detune.value = val;
+  }
+
   stop() {
     this.node.stop();
   }

@@ -32,7 +32,7 @@ export default function Synth() {
   const [lfo, setLFO] = useState(() => new LFONode(actx));
   const [isPlaying, setIsPlaying] = useState(false);
   const [stopTimeoutId, setStopTimeoutId] = useState(null);
-  console.log(stopTimeoutId);
+  console.log(currentOscillator);
 
   // create nodes
   const gain = useMemo(() => new Gain(actx), [actx]);
@@ -101,6 +101,7 @@ export default function Synth() {
   const syncState = useCallback(
     (oscillator) => {
       volume.setGain(preset.masterVolume);
+      oscillator.setDetune(preset.oscDetune);
       oscillator.setType(preset.oscType);
       oscillator.setGain(preset.oscGain);
       filter.setFrequency(preset.filterFreq);

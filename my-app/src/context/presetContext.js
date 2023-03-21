@@ -6,6 +6,7 @@ export const PresetProvider = ({ children }) => {
   const [preset, setPreset] = useState({
     masterVolume: 0.75,
     oscGain: 0.75,
+    oscDetune: 0,
     gainAttack: 0.1,
     gainDecay: 0.2,
     gainSustain: 0.3,
