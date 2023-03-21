@@ -7,7 +7,7 @@
   background-position: center;
   background-size: cover;
   display: grid;
-  grid-template-rows: 6fr 2fr;
+  grid-template-rows: 8fr 2fr;
   grid-template-columns: 1fr;
   justify-content: center;
   align-items: center;
@@ -17,7 +17,7 @@
 
 .synth-container {
   width: 75vw;
-  height: 70vh;
+  height: 75vh;
   background-color: rgb(203, 228, 222);
   border: 2px solid;
   color: black;

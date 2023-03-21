@@ -19,9 +19,10 @@ import { PresetContext } from "../../context/presetContext";
 import MasterVolume from "../Master/Master";
 import LFO from "../LFO/LFO";
 import { LFONode } from "../../Nodes/LFONode";
-import Reverb from "../FX/Reverb/Reverb";
 import { DelayNode } from "../../Nodes/DelayNode";
 import Delay from "../FX/Delay/Delay";
+import Waveshaper from "../FX/WaveShaper/WaveShaper";
+import { WaveshaperNode } from "../../Nodes/WaveshaperNode";
 
 export default function Synth() {
   const actx = useMemo(() => new AudioContext(), []);
@@ -36,6 +37,7 @@ export default function Synth() {
   const volume = useMemo(() => new Gain(actx), [actx]);
   const filter = useMemo(() => new BiquadFilter(actx), [actx]);
   const delay = useMemo(() => new DelayNode(actx), [actx]);
+  const drive = useMemo(() => new WaveshaperNode(actx), [actx]);
 
   const keyToNoteMap = {
     A: 130.81, // C3
@@ -71,12 +73,14 @@ export default function Synth() {
     const newLFO = new LFONode(actx);
 
     // Set up connections between nodes in the audio graph
-    // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
     delay.connect(volume.getNode());
     gain.connect(delay.getDelayNode()); // Connect the gain node to the delay node's input
     newLFO.connect(filter.getNode().frequency);
-    newOscillator.connect(filter.getNode());
+    newOscillator.connect(drive.getDryNode());
+    drive.getDryNode().connect(filter.getNode());
+    newOscillator.connect(drive.getWetNode());
+    drive.getWetNode().connect(filter.getNode());
     filter.connect(gain.getNode()); // Connect the filter node to the gain node's input
     newOscillator.setFreq(note);
 
@@ -84,7 +88,6 @@ export default function Synth() {
     newOscillator.start();
     newLFO.start();
 
-    // Sync the state of the new oscillator with the current preset values
     // Update the gain values based on the preset's ADSR settings
     updateGain();
     // Update the state with the new oscillator
@@ -105,8 +108,9 @@ export default function Synth() {
       delay.setFeedback(preset.delayFeedback);
       delay.setDelayTime(preset.delayTime);
       delay.setDryWet(preset.delayWet);
+      drive.setDryWet(preset.driveAmount);
     },
-    [preset, volume, filter, lfo, delay]
+    [preset, volume, filter, lfo, delay, drive]
   );
 
   // Function to update the gain based on the preset's ADSR settings
@@ -232,8 +236,8 @@ export default function Synth() {
               <MasterVolume />
             </div>
             <div className="right-bottom">
+              <Waveshaper />
               <Delay />
-              <Reverb />
             </div>
           </div>
         </div>

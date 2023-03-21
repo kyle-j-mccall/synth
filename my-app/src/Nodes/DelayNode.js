@@ -35,9 +35,6 @@ class DelayNode {
   setDryWet(value) {
     this.dryGain.setGain(1 - value);
     this.wetGain.setGain(value);
-    console.log("value", value);
-    console.log("dryGain", this.dryGain.getGain());
-    console.log("wet", this.wetGain.getGain());
   }
 
   getDryNode() {

@@ -19,6 +19,8 @@ export const PresetProvider = ({ children }) => {
     delayTime: 0.3,
     delayFeedback: 0.5,
     delayWet: 0.3,
+    driveAmount: 0.2,
+    driveDist: 5,
   });
   console.log(preset);
 
