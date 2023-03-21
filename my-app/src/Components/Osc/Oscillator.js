@@ -31,65 +31,59 @@ const Oscillator = () => {
 
   return (
     <div className="osc-component1">
-      <div>Oscillator</div>
+      <div className="osc-label">Oscillator</div>
+      <div className="osc-waves">
+        <img
+          className="wave-icon"
+          src={sineIcon}
+          alt="sine-icon"
+          onClick={() => handleSetWaveform("sine")}
+        />
+        <img
+          className="wave-icon"
+          src={sawIcon}
+          alt="saw-icon"
+          onClick={() => handleSetWaveform("sawtooth")}
+        />
+        <img
+          className="wave-icon"
+          src={squareIcon}
+          alt="square-icon"
+          onClick={() => handleSetWaveform("square")}
+        />
+      </div>
       <div className="oscillator-controls">
         <div className="detune container">
-          <div className="osc-freq-knob">
-            <Knob
-              value={oscGain * 10}
-              size={70}
-              min={0}
-              max={10}
-              step={1}
-              strokeWidth={5}
-              onChange={(e) => handleSetGain(e)}
-              className="my-knob"
-              rangeColor="rgb(37, 109, 133)"
-              valueColor="rgb(229, 209, 250)"
-              textColor="white"
-            />
-            <p>Detune</p>
-          </div>
+          <Knob
+            value={oscGain * 10}
+            size={70}
+            min={0}
+            max={10}
+            step={1}
+            strokeWidth={5}
+            onChange={(e) => handleSetGain(e)}
+            className="my-knob"
+            rangeColor="rgb(37, 109, 133)"
+            valueColor="rgb(229, 209, 250)"
+            textColor="white"
+          />
+          <p className="detune-label">Detune</p>
         </div>
-        <div className="osc-container">
-          <div className="osc-cell">
-            <div className="osc-waves">
-              <img
-                className="wave-icon"
-                src={sineIcon}
-                alt="sine-icon"
-                onClick={() => handleSetWaveform("sine")}
-              />
-              <img
-                className="wave-icon"
-                src={sawIcon}
-                alt="saw-icon"
-                onClick={() => handleSetWaveform("sawtooth")}
-              />
-              <img
-                className="wave-icon"
-                src={squareIcon}
-                alt="square-icon"
-                onClick={() => handleSetWaveform("square")}
-              />
-            </div>
-            <div className="osc-freq-knob">
-              <Knob
-                value={oscGain * 10}
-                size={70}
-                min={0}
-                max={10}
-                step={1}
-                strokeWidth={5}
-                onChange={(e) => handleSetGain(e)}
-                className="my-knob"
-                rangeColor="rgb(37, 109, 133)"
-                valueColor="rgb(229, 209, 250)"
-                textColor="white"
-              />
-              <p>Gain</p>
-            </div>
-          </div>
+        <div className="gain-container">
+          <Knob
+            value={oscGain * 10}
+            size={70}
+            min={0}
+            max={10}
+            step={1}
+            strokeWidth={5}
+            onChange={(e) => handleSetGain(e)}
+            className="my-knob"
+            rangeColor="rgb(37, 109, 133)"
+            valueColor="rgb(229, 209, 250)"
+            textColor="white"
+          />
+          <p className="gain-label">Gain</p>
         </div>
       </div>
     </div>

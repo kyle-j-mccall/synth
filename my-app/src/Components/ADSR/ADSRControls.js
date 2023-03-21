@@ -34,8 +34,9 @@ export default function ADSRControls() {
 
   return (
     <div className="adsr-container">
+      <div className="adsr-label">Envelope</div>
       <div className="attack-container">
-        <p>Attack</p>
+        <p className="attack-label">Attack</p>
         <Knob
           value={gainAttack * 1000}
           size={60}
@@ -62,10 +63,10 @@ export default function ADSRControls() {
           valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
-        <p>Decay</p>
+        <p className="decay-label">Decay</p>
       </div>
       <div className="sustain-container">
-        <p>Sustain</p>
+        <p className="sustain-label">Sustain</p>
         <Knob
           value={gainSustain * 1000}
           size={60}
@@ -92,7 +93,7 @@ export default function ADSRControls() {
           valueColor="rgb(229, 209, 250)"
           textColor="white"
         />
-        <p>Release</p>
+        <p className="release-label">Release</p>
       </div>
     </div>
   );

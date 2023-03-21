@@ -16,7 +16,7 @@ export default function MasterVolume() {
 
   return (
     <div className="volume-container">
-      <p>Master Volume</p>
+      <p className="master-title">Master Volume</p>
       <Knob
         className="volume-knob"
         value={masterVolume * 10}

@@ -33,8 +33,9 @@ export default function FilterControls() {
 
   return (
     <div className="filter-container">
+      <div className="filter-label">Filter</div>
+
       <div className="select-container">
-        <InputLabel>Filter</InputLabel>
         <TextField
           select
           variant="standard"
@@ -61,7 +62,7 @@ export default function FilterControls() {
             textColor="white"
             onChange={(e) => handleSetCutoff(e)}
           />
-          <p>Cutoff</p>
+          <p className="cutoff-label">Cutoff</p>
         </div>
         <div className="res-knob">
           <Knob
@@ -75,7 +76,7 @@ export default function FilterControls() {
             textColor="white"
             onChange={(e) => handleSetFilterQ(e)}
           />
-          <p>Q</p>
+          <p className="q-label">Q</p>
         </div>
       </div>
     </div>

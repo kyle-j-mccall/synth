@@ -1,6 +1,6 @@
 .adsr-container {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.44fr 1fr 1fr 1fr 1fr;
   height: 100%;
   align-items: center;
   border-right: 2px solid black;
@@ -11,6 +11,17 @@
   -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
   text-shadow: 0.75px 0.75px 0.75px black;
+}
+
+.adsr-label {
+  background-color: black;
+  color: white;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+  border-radius: 6px;
 }
 
 .attack-container {
@@ -32,4 +43,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.attack-label,
+.decay-label,
+.sustain-label,
+.release-label {
+  font-size: 2.5vh;
 }
