@@ -51,7 +51,7 @@ export default function Waveshaper() {
             value={driveAmount}
             size={70}
             min={0}
-            max={50}
+            max={15}
             strokeWidth={6}
             onChange={(e) => {
               handleSetDryWet(e);

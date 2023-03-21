@@ -9,6 +9,8 @@
   border: 1px solid black;
   height: 100%;
   background-color: rgb(55, 59, 133);
+  -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .waveshaper-controls {

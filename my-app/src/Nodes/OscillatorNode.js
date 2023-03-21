@@ -34,4 +34,8 @@ export class OscillatorNode {
   stop() {
     this.node.stop();
   }
+
+  disconnect() {
+    this.node.disconnect();
+  }
 }

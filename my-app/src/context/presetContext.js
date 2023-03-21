@@ -5,24 +5,24 @@ export const PresetContext = React.createContext();
 export const PresetProvider = ({ children }) => {
   const [preset, setPreset] = useState({
     masterVolume: 0.75,
+    oscGain: 0.75,
     gainAttack: 0.1,
     gainDecay: 0.2,
     gainSustain: 0.3,
     gainRelease: 0.4,
     oscType: "sawtooth",
-    filterFreq: 3000,
+    filterFreq: 5000,
     filterType: "lowpass",
     filterQ: 0,
     lfoRate: 0,
     lfoDepth: 0,
     lfoType: "sine",
-    delayTime: 0.3,
-    delayFeedback: 0.5,
-    delayWet: 0.3,
-    driveAmount: 0.2,
-    driveDist: 5,
+    delayTime: 0,
+    delayFeedback: 0,
+    delayWet: 0,
+    driveAmount: 0,
+    driveDist: 0,
   });
-  console.log(preset);
 
   return (
     <PresetContext.Provider value={{ preset, setPreset }}>

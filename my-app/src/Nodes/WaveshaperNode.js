@@ -26,7 +26,7 @@ export class WaveshaperNode {
     this.dryGain.getNode().connect(this.driveNode);
     this.driveNode.connect(this.wetGain.getNode());
     this.distortion = 0;
-    this.maxDistortion = 30;
+    this.maxDistortion = 15;
   }
 
   connect(target) {

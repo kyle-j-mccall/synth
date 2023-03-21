@@ -54,7 +54,7 @@ export default function LFO() {
             value={lfoRate}
             size={100}
             min={0}
-            max={100}
+            max={25}
             strokeWidth={6}
             onChange={(e) => {
               handleSetRate(e);
