@@ -1,0 +1,37 @@
+.waveshaper-container {
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+  width: 100%;
+  color: white;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+  height: 100%;
+  border-radius: 6px;
+  background-color: rgb(55, 59, 133);
+  -webkit-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.waveshaper-controls {
+  display: grid;
+  justify-content: space-around;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+}
+
+.amount-container {
+  margin-left: 2vw;
+}
+
+.shape-container {
+  margin-right: 2vw;
+}
+
+.waveshaper-title {
+  color: white;
+  font-size: 4vh;
+  font-family: "Rubik Iso", cursive;
+  text-shadow: 2px 2px 2px black;
+}

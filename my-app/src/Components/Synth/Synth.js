@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useRef,
 } from "react";
 import "./Synth.css";
 import "react-piano/dist/styles.css";
@@ -12,16 +13,17 @@ import Oscillator from "../Osc/Oscillator";
 import FilterControls from "../Filter/Filter";
 import ADSRControls from "../ADSR/ADSRControls";
 import { Gain } from "../../Nodes/Gain";
-import { Button } from "@mui/material";
 import { OscillatorNode } from "../../Nodes/OscillatorNode";
 import { BiquadFilter } from "../../Nodes/Filter";
 import { PresetContext } from "../../context/presetContext";
 import MasterVolume from "../Master/Master";
 import LFO from "../LFO/LFO";
 import { LFONode } from "../../Nodes/LFONode";
-import Reverb from "../FX/Reverb/Reverb";
 import { DelayNode } from "../../Nodes/DelayNode";
 import Delay from "../FX/Delay/Delay";
+import Waveshaper from "../FX/WaveShaper/WaveShaper";
+import { WaveshaperNode } from "../../Nodes/WaveshaperNode";
+const Oscilloscope = require("oscilloscope");
 
 export default function Synth() {
   const actx = useMemo(() => new AudioContext(), []);
@@ -30,12 +32,14 @@ export default function Synth() {
   const [lfo, setLFO] = useState(() => new LFONode(actx));
   const [isPlaying, setIsPlaying] = useState(false);
   const [stopTimeoutId, setStopTimeoutId] = useState(null);
+  console.log(currentOscillator);
 
   // create nodes
   const gain = useMemo(() => new Gain(actx), [actx]);
   const volume = useMemo(() => new Gain(actx), [actx]);
   const filter = useMemo(() => new BiquadFilter(actx), [actx]);
   const delay = useMemo(() => new DelayNode(actx), [actx]);
+  const drive = useMemo(() => new WaveshaperNode(actx), [actx]);
 
   const keyToNoteMap = {
     A: 130.81, // C3
@@ -56,27 +60,33 @@ export default function Synth() {
   // Function to initialize the synth, set up connections, and start the oscillator
   const initSynth = (note) => {
     // If there's an existing oscillator, stop it
-    if (currentOscillator) {
-      currentOscillator.stop();
+    // if (currentOscillator) {
+    //   currentOscillator.stop();
+    //   currentOscillator.disconnect();
+    // }
+    if (lfo) {
+      lfo.disconnect();
     }
 
     // Create a new OscillatorNode
     const newOscillator = new OscillatorNode(actx);
 
-    if (lfo) {
-      lfo.disconnect();
-    }
-    syncState(newOscillator);
-
     const newLFO = new LFONode(actx);
 
-    // Set up connections between nodes in the audio graph
+    setCurrentOscillator(newOscillator);
+    setLFO(newLFO);
+    newOscillator.setDetune(preset.oscDetune);
+    syncState(newOscillator);
+
     // Set up connections between nodes in the audio graph
     volume.connect(actx.destination);
     delay.connect(volume.getNode());
     gain.connect(delay.getDelayNode()); // Connect the gain node to the delay node's input
     newLFO.connect(filter.getNode().frequency);
-    newOscillator.connect(filter.getNode());
+    newOscillator.connect(drive.getDryNode());
+    drive.getDryNode().connect(filter.getNode());
+    newOscillator.connect(drive.getWetNode());
+    drive.getWetNode().connect(filter.getNode());
     filter.connect(gain.getNode()); // Connect the filter node to the gain node's input
     newOscillator.setFreq(note);
 
@@ -84,18 +94,17 @@ export default function Synth() {
     newOscillator.start();
     newLFO.start();
 
-    // Sync the state of the new oscillator with the current preset values
     // Update the gain values based on the preset's ADSR settings
     updateGain();
     // Update the state with the new oscillator
-    setCurrentOscillator(newOscillator);
-    setLFO(newLFO);
   };
 
   const syncState = useCallback(
     (oscillator) => {
       volume.setGain(preset.masterVolume);
+      oscillator.setDetune(preset.oscDetune);
       oscillator.setType(preset.oscType);
+      oscillator.setGain(preset.oscGain);
       filter.setFrequency(preset.filterFreq);
       filter.setType(preset.filterType);
       filter.setQ(preset.filterQ);
@@ -105,8 +114,9 @@ export default function Synth() {
       delay.setFeedback(preset.delayFeedback);
       delay.setDelayTime(preset.delayTime);
       delay.setDryWet(preset.delayWet);
+      drive.setDryWet(preset.driveAmount);
     },
-    [preset, volume, filter, lfo, delay]
+    [preset, volume, filter, lfo, delay, drive]
   );
 
   // Function to update the gain based on the preset's ADSR settings
@@ -165,8 +175,16 @@ export default function Synth() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-    // Remove handleKeyDown and handleKeyUp from the dependency array
   });
+
+  const startNote = (note) => {
+    if (currentOscillator) {
+      currentOscillator.stop();
+      currentOscillator.disconnect();
+    }
+
+    initSynth(note);
+  };
 
   // Function to stop the currently playing note
   const stopnote = () => {
@@ -178,7 +196,10 @@ export default function Synth() {
       // Set the gain value at the current time
       gain
         .getNode()
-        .gain.setValueAtTime(gain.getNode().gain.value, actx.currentTime);
+        .gain.linearRampToValueAtTime(
+          gain.getNode().gain.value,
+          actx.currentTime
+        );
       // Ramp down the gain to 0 during the release phase
       gain.getNode().gain.linearRampToValueAtTime(0, releaseEndTime);
       // Stop the LFO and the oscillator after the release phase ends
@@ -198,19 +219,19 @@ export default function Synth() {
   const keydown = (note) => {
     if (!isPlaying) {
       setIsPlaying(true);
-      initSynth(note);
+
+      startNote(note);
     }
   };
 
   const keyUp = () => {
     if (isPlaying) {
       setIsPlaying(false);
-      if (stopTimeoutId !== null) {
-        clearTimeout(stopTimeoutId); // Cancel the scheduled stopnote function
-      }
       stopnote();
     }
   };
+
+  const canvasRef = useRef(null);
 
   return (
     <div className="layout-body">
@@ -232,23 +253,14 @@ export default function Synth() {
               <MasterVolume />
             </div>
             <div className="right-bottom">
+              <Waveshaper />
               <Delay />
-              <Reverb />
             </div>
           </div>
         </div>
       </div>
-      <div>
-        <Button
-          onMouseDown={() => {
-            keydown();
-          }}
-          onMouseUp={() => {
-            keyUp();
-          }}
-        >
-          Play
-        </Button>
+      <div className="oscilloscope-container">
+        <canvas ref={canvasRef} />
       </div>
     </div>
   );

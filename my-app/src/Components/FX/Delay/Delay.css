@@ -3,7 +3,7 @@
   grid-template-rows: 1fr 4fr;
   color: black;
   width: 100%;
-
+  border-radius: 6px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -14,7 +14,9 @@
 
 .delay-title {
   color: black;
-  font-size: 3vh;
+  font-size: 4vh;
+  font-family: "Wallpoet", cursive;
+  text-shadow: 1px 1px 1px black;
 }
 
 .delay-controls {

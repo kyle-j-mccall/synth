@@ -10,16 +10,9 @@ import { PresetContext } from "../../context/presetContext";
 
 const Oscillator = () => {
   const { preset, setPreset } = useContext(PresetContext);
-  const [semitoneNum, setSemitoneNum] = useState(0);
-  const [volume, setVolume] = useState(0);
+  const { oscGain, oscDetune } = preset;
 
-  const handleIncrement = (val) => {
-    setSemitoneNum(val);
-  };
-
-  const handleDecrement = (val) => {
-    semitoneNum(val);
-  };
+  console.log(oscGain);
 
   const handleSetWaveform = (wave) => {
     setPreset({
@@ -27,75 +20,75 @@ const Oscillator = () => {
       oscType: wave,
     });
   };
+  const handleSetDetune = (e) => {
+    setPreset({
+      ...preset,
+      oscDetune: e.value,
+    });
+  };
 
-  const handleSetGain = (value) => {
-    setVolume(value);
+  const handleSetGain = (e) => {
+    setPreset({
+      ...preset,
+      oscGain: e.value / 10,
+    });
   };
 
   return (
     <div className="osc-component1">
-      <div>Oscillator</div>
+      <div className="osc-label">Oscillator</div>
+      <div className="osc-waves">
+        <img
+          className="wave-icon"
+          src={sineIcon}
+          alt="sine-icon"
+          onClick={() => handleSetWaveform("sine")}
+        />
+        <img
+          className="wave-icon"
+          src={sawIcon}
+          alt="saw-icon"
+          onClick={() => handleSetWaveform("sawtooth")}
+        />
+        <img
+          className="wave-icon"
+          src={squareIcon}
+          alt="square-icon"
+          onClick={() => handleSetWaveform("square")}
+        />
+      </div>
       <div className="oscillator-controls">
-        <div className="osc-pitch">
-          <img
-            className="pitch-arrow"
-            src={upArrow}
-            alt="pitch-up"
-            onClick={() => {
-              handleIncrement();
-              setSemitoneNum((prevState) => prevState + 1);
-            }}
+        <div className="detune container">
+          <Knob
+            value={oscDetune}
+            size={80}
+            min={-1500}
+            max={1500}
+            step={10}
+            strokeWidth={5}
+            onChange={(e) => handleSetDetune(e)}
+            className="my-knob"
+            rangeColor="rgb(37, 109, 133)"
+            valueColor="rgb(229, 209, 250)"
+            textColor="white"
           />
-          <p className="semitones">{semitoneNum}</p>
-          <img
-            className="pitch-arrow"
-            src={downArrow}
-            alt="pitch-down"
-            onClick={() => {
-              handleDecrement();
-              setSemitoneNum((prevState) => prevState - 1);
-            }}
-          />
+          <p className="detune-label">Detune</p>
         </div>
-        <div className="osc-container">
-          <div className="osc-cell">
-            <div className="osc-waves">
-              <img
-                className="wave-icon"
-                src={sineIcon}
-                alt="sine-icon"
-                onClick={() => handleSetWaveform("sine")}
-              />
-              <img
-                className="wave-icon"
-                src={sawIcon}
-                alt="saw-icon"
-                onClick={() => handleSetWaveform("sawtooth")}
-              />
-              <img
-                className="wave-icon"
-                src={squareIcon}
-                alt="square-icon"
-                onClick={() => handleSetWaveform("square")}
-              />
-            </div>
-            <div className="osc-freq-knob">
-              <Knob
-                value={volume}
-                size={80}
-                min={0}
-                max={10}
-                step={1}
-                strokeWidth={5}
-                onChange={(e) => handleSetGain(e.value)}
-                className="my-knob"
-                rangeColor="rgb(37, 109, 133)"
-                valueColor="rgb(229, 209, 250)"
-                textColor="white"
-              />
-              <p>Gain</p>
-            </div>
-          </div>
+        <div className="gain-container">
+          <Knob
+            value={oscGain * 10}
+            size={80}
+            min={0}
+            max={10}
+            step={1}
+            strokeWidth={5}
+            onChange={(e) => handleSetGain(e)}
+            className="my-knob"
+            rangeColor="rgb(37, 109, 133)"
+            valueColor="rgb(229, 209, 250)"
+            textColor="white"
+          />
+          <p className="gain-label">Gain</p>
         </div>
       </div>
     </div>

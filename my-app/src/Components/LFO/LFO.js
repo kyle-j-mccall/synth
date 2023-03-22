@@ -31,8 +31,8 @@ export default function LFO() {
 
   return (
     <div className="lfo-container">
+      <div className="lfo-label">Filter LFO</div>
       <div className="wave-select-container">
-        <InputLabel>Shape</InputLabel>
         <TextField
           select
           variant="standard"
@@ -54,7 +54,7 @@ export default function LFO() {
             value={lfoRate}
             size={100}
             min={0}
-            max={100}
+            max={25}
             strokeWidth={6}
             onChange={(e) => {
               handleSetRate(e);
@@ -63,7 +63,7 @@ export default function LFO() {
             valueColor="rgb(203, 228, 222)"
             textColor="white"
           />
-          <p>Rate</p>
+          <p className="rate-label">Rate</p>
         </div>
         <div className="depth-knob">
           <Knob
@@ -79,7 +79,7 @@ export default function LFO() {
             valueColor="rgb(203, 228, 222)"
             textColor="white"
           />
-          <p>Depth</p>
+          <p className="depth-label">Depth</p>
         </div>
       </div>
     </div>
