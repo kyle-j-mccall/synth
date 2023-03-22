@@ -11,7 +11,6 @@ import { PresetContext } from "../../context/presetContext";
 const Oscillator = () => {
   const { preset, setPreset } = useContext(PresetContext);
   const { oscGain, oscDetune } = preset;
-  const [semitoneNum, setSemitoneNum] = useState(0);
 
   console.log(oscGain);
 
@@ -62,10 +61,10 @@ const Oscillator = () => {
         <div className="detune container">
           <Knob
             value={oscDetune}
-            size={70}
-            min={0}
-            max={1000}
-            step={1}
+            size={80}
+            min={-1500}
+            max={1500}
+            step={10}
             strokeWidth={5}
             onChange={(e) => handleSetDetune(e)}
             className="my-knob"
@@ -78,7 +77,7 @@ const Oscillator = () => {
         <div className="gain-container">
           <Knob
             value={oscGain * 10}
-            size={70}
+            size={80}
             min={0}
             max={10}
             step={1}

@@ -60,10 +60,10 @@ export default function Synth() {
   // Function to initialize the synth, set up connections, and start the oscillator
   const initSynth = (note) => {
     // If there's an existing oscillator, stop it
-    if (currentOscillator) {
-      currentOscillator.stop();
-      currentOscillator.disconnect();
-    }
+    // if (currentOscillator) {
+    //   currentOscillator.stop();
+    //   currentOscillator.disconnect();
+    // }
     if (lfo) {
       lfo.disconnect();
     }
@@ -75,6 +75,7 @@ export default function Synth() {
 
     setCurrentOscillator(newOscillator);
     setLFO(newLFO);
+    newOscillator.setDetune(preset.oscDetune);
     syncState(newOscillator);
 
     // Set up connections between nodes in the audio graph
@@ -174,7 +175,6 @@ export default function Synth() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-    // Remove handleKeyDown and handleKeyUp from the dependency array
   });
 
   const startNote = (note) => {
@@ -187,7 +187,7 @@ export default function Synth() {
   };
 
   // Function to stop the currently playing note
-  const stopnote = (note) => {
+  const stopnote = () => {
     setIsPlaying(false);
 
     if (currentOscillator) {
@@ -217,11 +217,9 @@ export default function Synth() {
   };
 
   const keydown = (note) => {
-    if (!isPlaying || currentOscillator.frequency.value !== note) {
+    if (!isPlaying) {
       setIsPlaying(true);
-      if (currentOscillator) {
-        stopnote();
-      }
+
       startNote(note);
     }
   };
@@ -234,19 +232,6 @@ export default function Synth() {
   };
 
   const canvasRef = useRef(null);
-
-  // const createOscilloscope = useCallback(
-  //   (audioNode) => {
-  //     if (canvasRef.current) {
-  //       const oscilloscope = new Oscilloscope(audioNode);
-  //       const ctx = canvasRef.current.getContext("2d");
-  //       oscilloscope.animate(ctx);
-  //       return oscilloscope;
-  //     }
-  //     return null;
-  //   },
-  //   [actx]
-  // );
 
   return (
     <div className="layout-body">

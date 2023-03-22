@@ -5,6 +5,7 @@
   align-items: center;
   background-color: rgb(25, 167, 206);
   border: 1px solid black;
+  border-radius: 6px;
 
   font-size: 3vh;
   text-shadow: 0.75px 0.75px 0.75px black;

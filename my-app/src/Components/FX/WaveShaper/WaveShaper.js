@@ -31,7 +31,7 @@ export default function Waveshaper() {
           <Knob
             className="wave-shaper-knob"
             value={driveDist}
-            size={70}
+            size={80}
             min={0}
             max={50}
             strokeWidth={6}
@@ -49,7 +49,7 @@ export default function Waveshaper() {
           <Knob
             className="wave-shaper-knob"
             value={driveAmount}
-            size={70}
+            size={80}
             min={0}
             max={15}
             strokeWidth={6}
